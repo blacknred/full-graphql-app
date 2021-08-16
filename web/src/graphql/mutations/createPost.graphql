@@ -1,0 +1,5 @@
+mutation CreatePost($title: String!, $text: String!) {
+  createPost(options: { title: $title, text: $text }) {
+    ...BasePostResponse
+  }
+}

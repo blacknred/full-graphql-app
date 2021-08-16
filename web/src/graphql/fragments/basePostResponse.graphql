@@ -1,0 +1,8 @@
+fragment BasePostResponse on PostResponse {
+  errors {
+    ...BaseError
+  }
+  data {
+    ...BasePost
+  }
+}

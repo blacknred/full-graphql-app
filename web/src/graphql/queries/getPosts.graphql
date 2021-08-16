@@ -1,0 +1,9 @@
+query GetPosts($limit: Float!, $cursor: String!, $sorting: String!) {
+  getPosts(params: { limit: $limit, cursor: $cursor, sorting: $sorting }) {
+    items {
+      ...BasePost
+      textSnippet
+    }
+    hasMore
+  }
+}

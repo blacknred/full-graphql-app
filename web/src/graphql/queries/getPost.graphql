@@ -1,0 +1,6 @@
+query GetPost($id: Float!) {
+  getPost(id: $id) {
+    ...BasePost
+    text
+  }
+}

@@ -1,0 +1,12 @@
+fragment BasePost on Post {
+  id
+  title
+  rating
+  createdAt
+  userVote {
+    value
+  }
+  creator {
+    ...BaseUser
+  }
+}

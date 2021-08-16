@@ -1,0 +1,39 @@
+{
+  "name": "web",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "gen": "graphql-codegen --config codegen.yml"
+  },
+  "dependencies": {
+    "@chakra-ui/icons": "^1.0.14",
+    "@chakra-ui/react": "^1.6.5",
+    "@emotion/react": "^11.4.0",
+    "@emotion/styled": "^11.3.0",
+    "@urql/exchange-graphcache": "^4.2.1",
+    "formik": "^2.2.9",
+    "framer-motion": "^4.1.17",
+    "graphql": "^15.5.1",
+    "next": "11.0.1",
+    "next-urql": "^3.1.1",
+    "react": "17.0.2",
+    "react-dom": "17.0.2",
+    "react-is": "^17.0.2",
+    "urql": "^2.0.4",
+    "wonka": "^4.0.15"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "1.21.7",
+    "@graphql-codegen/typescript": "1.23.0",
+    "@graphql-codegen/typescript-operations": "1.18.4",
+    "@graphql-codegen/typescript-urql": "*",
+    "@types/react": "17.0.14",
+    "eslint": "7.31.0",
+    "eslint-config-next": "11.0.1",
+    "typescript": "4.3.5"
+  }
+}
