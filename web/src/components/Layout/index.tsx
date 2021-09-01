@@ -6,7 +6,7 @@ import { FC } from 'react';
 import {
   useLogoutMutation,
   useMeQuery
-} from '../typings';
+} from '../../typings';
 
 interface IProps {
   variant?: 'lg' | 'sm',

@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
-import { PostItem } from '../../components/PostItem';
+import { PostItem } from '../../components/PostList/PostItem';
 import { Sidebar } from '../../components/Sidebar';
 import { Post, useGetPostQuery } from '../../typings';
 import urqlClient from '../../urqlClient';

@@ -2,10 +2,10 @@ import { DeleteIcon, EditIcon, PlusSquareIcon } from '@chakra-ui/icons';
 import { Box, Button, Select, Stack, useColorModeValue } from '@chakra-ui/react';
 import router from 'next/router';
 import React, { LegacyRef, useRef } from 'react';
-import useOnViewport from '../hooks/useOnViewport';
-import { Post, useDeletePostMutation, useMeQuery } from '../typings';
-import { getRandBgColor } from '../utils';
-import AuthLink from './AuthLink';
+import useOnViewport from '../../hooks/useOnViewport';
+import { Post, useDeletePostMutation, useMeQuery } from '../../typings';
+import { getRandBgColor } from '../../utils';
+import AuthLink from '../AuthLink';
 
 interface IProps {
   type?: 'feed' | 'post' | 'default',

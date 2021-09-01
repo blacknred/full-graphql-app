@@ -1,6 +1,6 @@
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Flex, Heading, IconButton, Spinner, useColorModeValue } from '@chakra-ui/react';
-import { Post, useMeQuery, useVoteMutation, Vote } from '../typings';
+import { Post, useMeQuery, useVoteMutation, Vote } from '../../typings';
 
 interface IProps {
   rating: Post['rating'];

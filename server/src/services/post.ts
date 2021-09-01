@@ -12,8 +12,8 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import checkAuth from "../middleware/checkAuth";
-import { Post } from "../models/Post";
-import { Vote } from "../models/Vote";
+import { Post } from "../entities/Post";
+import { Vote } from "../entities/Vote";
 import { AppCtx } from "../typings";
 import { inputValidation } from "../utils";
 import {

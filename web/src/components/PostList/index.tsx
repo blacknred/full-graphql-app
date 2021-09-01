@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react';
-import { Post } from '../typings';
+import { Post } from '../../typings';
 import { PostItem } from "./PostItem";
 
 interface IProps {

@@ -3,7 +3,7 @@ import Link from 'next/link';
 import React from 'react';
 import {
   useMeQuery
-} from '../typings';
+} from '../../typings';
 
 interface IProps {
   href: string

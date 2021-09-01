@@ -4,9 +4,9 @@ import {
   Box, Button, Center, Divider, Flex, Heading, Stack, Text, useColorModeValue
 } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import { Post } from '../typings';
-import { getRandBgColor, timeSince } from '../utils';
-import { VoteSection } from './VoteSection';
+import { Post } from '../../../typings';
+import { getRandBgColor, timeSince } from '../../../utils';
+import { VoteSection } from '../../VoteSection';
 
 interface IProps {
   data: Post

@@ -13,7 +13,7 @@ import {
 } from "type-graphql";
 import { v4 } from "uuid";
 import templates from "../mailTemplates";
-import { User } from "../models/User";
+import { User } from "../entities/User";
 import { AppCtx } from "../typings";
 import { inputValidation } from "../utils";
 import { FieldError, ValidatedResponse } from "./_fragments";
