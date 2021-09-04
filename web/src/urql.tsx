@@ -84,7 +84,7 @@ const cachePolicy: CacheExchangeOpts = {
 
 export default function createUrqlClient(ssrExchange: any, ctx: any) {
   return {
-    url: 'http://localhost:4000/graphql',
+    url: `http://${process.env.API_HOST}/graphql`,
     exchanges: [dedupExchange, cacheExchange(cachePolicy), ErrorExchange, ssrExchange, fetchExchange],
     // requestPolicy: "cache-and-network",
     fetchOptions: {

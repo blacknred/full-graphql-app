@@ -23,6 +23,7 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 COPY yarn.lock ./
 RUN yarn --prod install
+RUN yarn build
 # RUN yarn install pm2 -g
 COPY . .
 # Here we copy the built /dist folder from the development image

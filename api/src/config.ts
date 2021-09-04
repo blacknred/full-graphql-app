@@ -1,13 +1,14 @@
-import * as dotenv from "dotenv";
+// import * as dotenv from "dotenv";
 import * as path from "path";
 
-dotenv.config({
-  path: path.join(
-    __dirname,
-    "../",
-    `.env.${process.env.NODE_ENV || "development"}`
-  ),
-});
+// dotenv.config({
+//   path: path.join(
+//     __dirname,
+//     "../",
+//     `.env.${process.env.NODE_ENV || "development"}`
+//   ),
+// });
+console.log(process.env.REDIS_URL);
 
 const config = {} as __Config__;
 
@@ -40,8 +41,8 @@ config.session = {
 config.db = {
   entities: [path.join(__dirname, "/app/*/entity.{ts,js}")],
   migrations: [path.join(__dirname, "../", "migration/*.ts")],
-  type: "postgres",
-  url: process.env.POSTGRES_URL,
+  type: "postgres", 
+  url: process.env.DB_URL,
   logging: !config.__prod__,
   synchronize: true,
   useUTC: true,
