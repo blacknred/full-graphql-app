@@ -8,7 +8,7 @@ import InputField from '../components/InputField';
 import Layout from '../components/Layout';
 import Meta from '../components/Meta';
 import { useRegisterMutation } from '../typings';
-import urqlClient from '../urqlClient';
+import urqlClient from '../urql';
 import { errorMap } from '../utils';
 
 interface IProps { }

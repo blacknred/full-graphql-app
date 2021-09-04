@@ -1,57 +1,12 @@
-import {
-  Arg,
-  Ctx,
-  Field,
-  FieldResolver,
-  InputType,
-  Mutation,
-  ObjectType,
-  Query,
-  Resolver,
-  Root,
-  UseMiddleware,
-} from "type-graphql";
-import checkAuth from "../middleware/checkAuth";
-import { Post } from "../entities/Post";
-import { Vote } from "../entities/Vote";
-import { AppCtx } from "../typings";
-import { inputValidation } from "../utils";
-import {
-  FieldError,
-  PaginatedInput,
-  PaginatedResponse,
-  ValidatedResponse,
-} from "./_fragments";
+import { AppCtx } from "../../typings";
+import inputValidation from "../../utils/inputValidation";
+import { FieldErrorDto, PaginatedInputDto } from "../../utils/sharedDto";
+import { Vote } from "../votes/entity";
+import { PostInputDto } from "./dto";
+import { Post } from "./entity";
 
-@InputType()
-class PostInput {
-  @Field()
-  title!: string;
-  @Field()
-  text!: string;
-}
-
-@ObjectType()
-class PostResponse extends ValidatedResponse(Post) {}
-
-@ObjectType()
-class PostsResponse extends PaginatedResponse(Post) {}
-
-@ObjectType()
-class VoteResponse extends ValidatedResponse(Number) {}
-
-@Resolver(Post)
-export class PostResolver {
-  @FieldResolver(() => String)
-  textSnippet(@Root() post: Post) {
-    return post.text.slice(0, 500);
-  }
-
-  @Query(() => PostsResponse)
-  async getPosts(
-    @Arg("params") params: PaginatedInput,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostsResponse> {
+export class PostsService {
+  async findPosts(ctx: AppCtx["ctx"], params: PaginatedInputDto) {
     const lim = Math.min(50, params.limit);
     const extraLim = lim + 1;
     const cur = params.cursor ? new Date(+params.cursor) : new Date();
@@ -67,7 +22,7 @@ export class PostResolver {
 
     posts.forEach((post) => post.setComputed(ctx.session?.userId));
 
-    //     -- SELECT "p".*, "user".*, SUM("v"."value"), "v1"."value" FROM post "p"
+    // -- SELECT "p".*, "user".*, SUM("v"."value"), "v1"."value" FROM post "p"
     // -- LEFT JOIN "vote" "v" ON ("v"."postId" = "p"."id")
     // -- LEFT JOIN "vote" "v1" ON ("v1"."postId" = "p"."id" AND "v1"."userId" = 11)
     // -- LEFT JOIN "user" ON ("user"."id"="p"."creatorId")
@@ -96,11 +51,7 @@ export class PostResolver {
     };
   }
 
-  @Query(() => Post, { nullable: true })
-  async getPost(
-    @Arg("id") id: number,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<Post | undefined> {
+  async findPostById(ctx: AppCtx["ctx"], id: number) {
     const post = await Post.createQueryBuilder("p")
       .leftJoinAndSelect("p.creator", "p_creator")
       .leftJoinAndMapMany("p.votes", "vote", "v", "v.postId = p.id")
@@ -111,13 +62,8 @@ export class PostResolver {
     return post;
   }
 
-  @Mutation(() => PostResponse)
-  @UseMiddleware(checkAuth)
-  async createPost(
-    @Arg("options") options: PostInput,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponse> {
-    const errors = inputValidation<PostInput, FieldError>(options);
+  async createPost(ctx: AppCtx["ctx"], options: PostInputDto) {
+    const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
     const post = await Post.create({
@@ -127,14 +73,8 @@ export class PostResolver {
     return { data: post };
   }
 
-  @Mutation(() => PostResponse, { nullable: true })
-  @UseMiddleware(checkAuth)
-  async updatePost(
-    @Arg("id") id: number,
-    @Arg("options") options: PostInput,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponse> {
-    const errors = inputValidation<PostInput, FieldError>(options);
+  async updatePost(ctx: AppCtx["ctx"], id: number, options: PostInputDto) {
+    const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
     const post = await Post.findOne(id);
@@ -159,12 +99,7 @@ export class PostResolver {
     return { data };
   }
 
-  @Mutation(() => PostResponse)
-  @UseMiddleware(checkAuth)
-  async deletePost(
-    @Arg("id") id: number,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponse> {
+  async removePost(ctx: AppCtx["ctx"], id: number) {
     const post = await Post.findOne(id);
     if (!post) {
       const error = {
@@ -186,13 +121,7 @@ export class PostResolver {
     return {};
   }
 
-  @Mutation(() => VoteResponse)
-  @UseMiddleware(checkAuth)
-  async vote(
-    @Arg("postId") postId: number,
-    @Arg("value") value: 1 | -1,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<VoteResponse> {
+  async createVote(ctx: AppCtx["ctx"], postId: number, value: 1 | -1) {
     const { userId } = ctx.session!;
     const val = value < 0 ? -1 : 1;
 

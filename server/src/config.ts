@@ -5,7 +5,7 @@ dotenv.config({
   path: path.join(
     __dirname,
     "../",
-    `.env.${process.env.NODE_ENV || "development"}.local`
+    `.env.${process.env.NODE_ENV || "development"}`
   ),
 });
 
@@ -20,7 +20,7 @@ config.__clients__ = process.env.CLIENT_HOSTS
 
 config.graphiql = !config.__prod__;
 config.graphql = {
-  resolvers: [path.join(__dirname, "/controllers/*.{ts,js}")],
+  resolvers: [path.join(__dirname, "app/*/controller.{ts,js}")],
   skipCheck: true,
   validate: false,
 };
@@ -38,7 +38,7 @@ config.session = {
 };
 
 config.db = {
-  entities: [path.join(__dirname, "models/*.*")],
+  entities: [path.join(__dirname, "/app/*/entity.{ts,js}")],
   migrations: [path.join(__dirname, "../", "migration/*.ts")],
   type: "postgres",
   url: process.env.POSTGRES_URL,

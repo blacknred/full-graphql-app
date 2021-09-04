@@ -10,7 +10,7 @@ import { PostList } from '../components/PostList'
 import { Sidebar } from '../components/Sidebar'
 import useOnViewport from '../hooks/useOnViewport'
 import { GetPostsQueryVariables, Post, useGetPostsQuery } from '../typings'
-import urqlClient from '../urqlClient'
+import urqlClient from '../urql'
 
 const Index = () => {
   const [variables, setVariables] = useState<GetPostsQueryVariables>({
@@ -52,4 +52,4 @@ const Index = () => {
   )
 }
 
-export default withUrqlClient(urqlClient, { ssr: false })(Index)
+export default withUrqlClient(urqlClient, { ssr: true })(Index)

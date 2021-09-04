@@ -1,4 +1,4 @@
-fragment BasePostResponse on PostResponse {
+fragment BasePostResponse on PostResponseDto {
   errors {
     ...BaseError
   }

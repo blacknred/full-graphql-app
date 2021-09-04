@@ -8,8 +8,8 @@ import {
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
-import { User } from "./User";
-import { Vote } from "./Vote";
+import { User } from "../users/entity";
+import { Vote } from "../votes/entity";
 
 @Entity()
 @ObjectType()

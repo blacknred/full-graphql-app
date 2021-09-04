@@ -1,7 +1,7 @@
 import { Field, ObjectType, ClassType, InputType } from "type-graphql";
 
 @ObjectType()
-export class FieldError {
+export class FieldErrorDto {
   @Field()
   field!: string;
   @Field()
@@ -9,7 +9,7 @@ export class FieldError {
 }
 
 @InputType()
-export class PaginatedInput {
+export class PaginatedInputDto {
   @Field()
   limit!: number;
   @Field()
@@ -18,7 +18,9 @@ export class PaginatedInput {
   sorting?: string;
 }
 
-export function PaginatedResponse<T>(TValue: ClassType<T> | String | Number | Boolean): any {
+export function PaginatedResponseDto<T>(
+  TValue: ClassType<T> | String | Number | Boolean
+): any {
   @ObjectType({ isAbstract: true })
   abstract class PaginatedResponseClass {
     @Field(() => [TValue])
@@ -32,11 +34,13 @@ export function PaginatedResponse<T>(TValue: ClassType<T> | String | Number | Bo
   return PaginatedResponseClass;
 }
 
-export function ValidatedResponse<T>(TValue: ClassType<T> | String | Number | Boolean): any {
+export function ValidatedResponseDto<T>(
+  TValue: ClassType<T> | String | Number | Boolean
+): any {
   @ObjectType({ isAbstract: true })
   abstract class ValidatedResponseClass {
-    @Field(() => [FieldError], { nullable: true })
-    errors?: FieldError[];
+    @Field(() => [FieldErrorDto], { nullable: true })
+    errors?: FieldErrorDto[];
     @Field(() => TValue, { nullable: true })
     data?: T;
   }

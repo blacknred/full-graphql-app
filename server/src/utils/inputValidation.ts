@@ -1,12 +1,9 @@
 import isEmail from "email-validator";
 
-export function delay(ms = 1000): Promise<void> {
-  return new Promise((r) => setInterval(r, ms));
-}
-
-export function inputValidation<Input extends Record<keyof Input, string>, Err>(
-  fields: Input
-): Err[] | null {
+export default function inputValidation<
+  Input extends Record<keyof Input, string>,
+  Err
+>(fields: Input): Err[] | null {
   const errors: Err[] = [];
 
   for (let field in fields) {

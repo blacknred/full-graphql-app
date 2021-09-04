@@ -9,7 +9,7 @@ import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
 import { Sidebar } from '../../components/Sidebar';
 import { useCreatePostMutation } from '../../typings';
-import urqlClient from '../../urqlClient';
+import urqlClient from '../../urql';
 import { errorMap } from '../../utils';
 
 interface IProps { }

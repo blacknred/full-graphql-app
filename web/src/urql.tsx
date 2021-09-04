@@ -3,7 +3,7 @@ import router from 'next/router';
 import { dedupExchange, Exchange, fetchExchange, gql, stringifyVariables } from 'urql';
 import { pipe, tap } from 'wonka';
 import { DeletePostMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation, VoteMutation } from './typings';
-import { betterUpdateQuery, isServer } from './utils';
+import { customUpdateQuery, isServer } from './utils';
 
 const ErrorExchange: Exchange = ({ forward }) => (ops$) => {
   return pipe(
@@ -44,7 +44,7 @@ function invalidatePosts(cache: Cache) {
 const cachePolicy: CacheExchangeOpts = {
   resolvers: {
     Query: {
-      getPosts: cursorPagination("PostsResponse")
+      getPosts: cursorPagination("PostsResponseDto")
     }
   },
   updates: {
@@ -64,17 +64,17 @@ const cachePolicy: CacheExchangeOpts = {
         }
       },
       logout: (_result: LogoutMutation, _, cache) => {
-        betterUpdateQuery<LogoutMutation, MeQuery>(cache, { query: MeDocument }, _result, () => ({ me: null }))
+        customUpdateQuery<LogoutMutation, MeQuery>(cache, { query: MeDocument }, _result, () => ({ me: null }))
         invalidatePosts(cache)
       },
       login: (_result: LoginMutation, _, cache) => {
-        betterUpdateQuery<LoginMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
+        customUpdateQuery<LoginMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
           return result.login.errors ? query : { me: result.login.data };
         })
         invalidatePosts(cache)
       },
       register: (_result: RegisterMutation, _, cache) => {
-        betterUpdateQuery<RegisterMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
+        customUpdateQuery<RegisterMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
           return result.register.errors ? query : { me: result.register.data };
         })
       },

@@ -8,5 +8,5 @@ function changedPassword() {
 
 export default {
   forgotPassword,
-  changedPassword
-}
+  changedPassword,
+};

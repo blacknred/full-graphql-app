@@ -1,4 +1,4 @@
-import { FieldError } from "./typings";
+import { FieldErrorDto } from "./typings";
 import { Cache, QueryInput } from "@urql/exchange-graphcache";
 
 export const isServer = () => typeof window === "undefined";
@@ -7,7 +7,7 @@ export function delay(ms = 1000): Promise<void> {
   return new Promise((r) => setInterval(r, ms));
 }
 
-export function errorMap(errors: FieldError[]) {
+export function errorMap(errors: FieldErrorDto[]) {
   const map: Record<string, string> = {};
   for (let { field, message } of errors) {
     map[field] = message;
@@ -16,7 +16,7 @@ export function errorMap(errors: FieldError[]) {
   return map;
 }
 
-export function betterUpdateQuery<Result, Query>(
+export function customUpdateQuery<Result, Query>(
   cache: Cache,
   qi: QueryInput,
   result: any,

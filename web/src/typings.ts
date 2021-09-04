@@ -14,46 +14,46 @@ export type Scalars = {
   Float: number;
 };
 
-export type FieldError = {
-  __typename?: 'FieldError';
+export type FieldErrorDto = {
+  __typename?: 'FieldErrorDto';
   field: Scalars['String'];
   message: Scalars['String'];
 };
 
-export type HealthResponse = {
-  __typename?: 'HealthResponse';
+export type HealthResponseDto = {
+  __typename?: 'HealthResponseDto';
   status: Scalars['String'];
   tz: Scalars['String'];
   uptime: Scalars['String'];
   activeConnections: Scalars['Float'];
 };
 
-export type LoginInput = {
+export type LoginInputDto = {
   usernameOrEmail: Scalars['String'];
   password: Scalars['String'];
 };
 
 export type Mutation = {
   __typename?: 'Mutation';
-  createPost: PostResponse;
-  updatePost?: Maybe<PostResponse>;
-  deletePost: PostResponse;
-  vote: VoteResponse;
-  register: UserResponse;
-  login: UserResponse;
+  createPost: PostResponseDto;
+  updatePost?: Maybe<PostResponseDto>;
+  deletePost: PostResponseDto;
+  vote: VoteResponseDto;
+  register: UserResponseDto;
+  login: UserResponseDto;
   logout: Scalars['Boolean'];
-  forgotPassword: UserResponse;
-  changePassword: UserResponse;
+  forgotPassword: UserResponseDto;
+  changePassword: UserResponseDto;
 };
 
 
 export type MutationCreatePostArgs = {
-  options: PostInput;
+  options: PostInputDto;
 };
 
 
 export type MutationUpdatePostArgs = {
-  options: PostInput;
+  options: PostInputDto;
   id: Scalars['Float'];
 };
 
@@ -70,12 +70,12 @@ export type MutationVoteArgs = {
 
 
 export type MutationRegisterArgs = {
-  options: RegisterInput;
+  options: RegisterInputDto;
 };
 
 
 export type MutationLoginArgs = {
-  options: LoginInput;
+  options: LoginInputDto;
 };
 
 
@@ -85,15 +85,15 @@ export type MutationForgotPasswordArgs = {
 
 
 export type MutationChangePasswordArgs = {
-  options: NewPasswordInput;
+  options: NewPasswordInputDto;
 };
 
-export type NewPasswordInput = {
+export type NewPasswordInputDto = {
   token: Scalars['String'];
   password: Scalars['String'];
 };
 
-export type PaginatedInput = {
+export type PaginatedInputDto = {
   limit: Scalars['Float'];
   cursor: Scalars['String'];
   sorting: Scalars['String'];
@@ -108,40 +108,40 @@ export type Post = {
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
   creator: User;
+  votes: Array<Vote>;
   rating?: Maybe<Scalars['Int']>;
   userVote?: Maybe<Vote>;
-  votes: Array<Vote>;
   textSnippet: Scalars['String'];
 };
 
-export type PostInput = {
+export type PostInputDto = {
   title: Scalars['String'];
   text: Scalars['String'];
 };
 
-export type PostResponse = {
-  __typename?: 'PostResponse';
-  errors?: Maybe<Array<FieldError>>;
+export type PostResponseDto = {
+  __typename?: 'PostResponseDto';
+  errors?: Maybe<Array<FieldErrorDto>>;
   data?: Maybe<Post>;
 };
 
-export type PostsResponse = {
-  __typename?: 'PostsResponse';
+export type PostsResponseDto = {
+  __typename?: 'PostsResponseDto';
   items: Array<Post>;
   hasMore: Scalars['Boolean'];
 };
 
 export type Query = {
   __typename?: 'Query';
-  health: HealthResponse;
-  getPosts: PostsResponse;
+  health: HealthResponseDto;
+  getPosts: PostsResponseDto;
   getPost?: Maybe<Post>;
   me?: Maybe<User>;
 };
 
 
 export type QueryGetPostsArgs = {
-  params: PaginatedInput;
+  params: PaginatedInputDto;
 };
 
 
@@ -149,7 +149,7 @@ export type QueryGetPostArgs = {
   id: Scalars['Float'];
 };
 
-export type RegisterInput = {
+export type RegisterInputDto = {
   username: Scalars['String'];
   password: Scalars['String'];
   email: Scalars['String'];
@@ -165,9 +165,9 @@ export type User = {
   updatedAt: Scalars['String'];
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldError>>;
+export type UserResponseDto = {
+  __typename?: 'UserResponseDto';
+  errors?: Maybe<Array<FieldErrorDto>>;
   data?: Maybe<User>;
 };
 
@@ -177,15 +177,15 @@ export type Vote = {
   user: User;
 };
 
-export type VoteResponse = {
-  __typename?: 'VoteResponse';
-  errors?: Maybe<Array<FieldError>>;
+export type VoteResponseDto = {
+  __typename?: 'VoteResponseDto';
+  errors?: Maybe<Array<FieldErrorDto>>;
   data?: Maybe<Scalars['Float']>;
 };
 
 export type BaseErrorFragment = (
-  { __typename?: 'FieldError' }
-  & Pick<FieldError, 'field' | 'message'>
+  { __typename?: 'FieldErrorDto' }
+  & Pick<FieldErrorDto, 'field' | 'message'>
 );
 
 export type BasePostFragment = (
@@ -201,9 +201,9 @@ export type BasePostFragment = (
 );
 
 export type BasePostResponseFragment = (
-  { __typename?: 'PostResponse' }
+  { __typename?: 'PostResponseDto' }
   & { errors?: Maybe<Array<(
-    { __typename?: 'FieldError' }
+    { __typename?: 'FieldErrorDto' }
     & BaseErrorFragment
   )>>, data?: Maybe<(
     { __typename?: 'Post' }
@@ -217,9 +217,9 @@ export type BaseUserFragment = (
 );
 
 export type BaseUserResponseFragment = (
-  { __typename?: 'UserResponse' }
+  { __typename?: 'UserResponseDto' }
   & { errors?: Maybe<Array<(
-    { __typename?: 'FieldError' }
+    { __typename?: 'FieldErrorDto' }
     & BaseErrorFragment
   )>>, data?: Maybe<(
     { __typename?: 'User' }
@@ -236,9 +236,9 @@ export type ChangePasswordMutationVariables = Exact<{
 export type ChangePasswordMutation = (
   { __typename?: 'Mutation' }
   & { changePassword: (
-    { __typename?: 'UserResponse' }
+    { __typename?: 'UserResponseDto' }
     & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
+      { __typename?: 'FieldErrorDto' }
       & BaseErrorFragment
     )>> }
   ) }
@@ -253,7 +253,7 @@ export type CreatePostMutationVariables = Exact<{
 export type CreatePostMutation = (
   { __typename?: 'Mutation' }
   & { createPost: (
-    { __typename?: 'PostResponse' }
+    { __typename?: 'PostResponseDto' }
     & BasePostResponseFragment
   ) }
 );
@@ -266,9 +266,9 @@ export type DeletePostMutationVariables = Exact<{
 export type DeletePostMutation = (
   { __typename?: 'Mutation' }
   & { deletePost: (
-    { __typename?: 'PostResponse' }
+    { __typename?: 'PostResponseDto' }
     & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
+      { __typename?: 'FieldErrorDto' }
       & BaseErrorFragment
     )>> }
   ) }
@@ -282,9 +282,9 @@ export type ForgotPasswordMutationVariables = Exact<{
 export type ForgotPasswordMutation = (
   { __typename?: 'Mutation' }
   & { forgotPassword: (
-    { __typename?: 'UserResponse' }
+    { __typename?: 'UserResponseDto' }
     & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
+      { __typename?: 'FieldErrorDto' }
       & BaseErrorFragment
     )>> }
   ) }
@@ -299,7 +299,7 @@ export type LoginMutationVariables = Exact<{
 export type LoginMutation = (
   { __typename?: 'Mutation' }
   & { login: (
-    { __typename?: 'UserResponse' }
+    { __typename?: 'UserResponseDto' }
     & BaseUserResponseFragment
   ) }
 );
@@ -322,7 +322,7 @@ export type RegisterMutationVariables = Exact<{
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
-    { __typename?: 'UserResponse' }
+    { __typename?: 'UserResponseDto' }
     & BaseUserResponseFragment
   ) }
 );
@@ -336,10 +336,10 @@ export type VoteMutationVariables = Exact<{
 export type VoteMutation = (
   { __typename?: 'Mutation' }
   & { vote: (
-    { __typename?: 'VoteResponse' }
-    & Pick<VoteResponse, 'data'>
+    { __typename?: 'VoteResponseDto' }
+    & Pick<VoteResponseDto, 'data'>
     & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
+      { __typename?: 'FieldErrorDto' }
       & BaseErrorFragment
     )>> }
   ) }
@@ -369,8 +369,8 @@ export type GetPostsQueryVariables = Exact<{
 export type GetPostsQuery = (
   { __typename?: 'Query' }
   & { getPosts: (
-    { __typename?: 'PostsResponse' }
-    & Pick<PostsResponse, 'hasMore'>
+    { __typename?: 'PostsResponseDto' }
+    & Pick<PostsResponseDto, 'hasMore'>
     & { items: Array<(
       { __typename?: 'Post' }
       & Pick<Post, 'textSnippet'>
@@ -391,7 +391,7 @@ export type MeQuery = (
 );
 
 export const BaseErrorFragmentDoc = gql`
-    fragment BaseError on FieldError {
+    fragment BaseError on FieldErrorDto {
   field
   message
 }
@@ -417,7 +417,7 @@ export const BasePostFragmentDoc = gql`
 }
     ${BaseUserFragmentDoc}`;
 export const BasePostResponseFragmentDoc = gql`
-    fragment BasePostResponse on PostResponse {
+    fragment BasePostResponse on PostResponseDto {
   errors {
     ...BaseError
   }
@@ -428,7 +428,7 @@ export const BasePostResponseFragmentDoc = gql`
     ${BaseErrorFragmentDoc}
 ${BasePostFragmentDoc}`;
 export const BaseUserResponseFragmentDoc = gql`
-    fragment BaseUserResponse on UserResponse {
+    fragment BaseUserResponse on UserResponseDto {
   errors {
     ...BaseError
   }

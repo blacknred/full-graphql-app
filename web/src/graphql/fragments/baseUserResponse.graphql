@@ -1,4 +1,4 @@
-fragment BaseUserResponse on UserResponse {
+fragment BaseUserResponse on UserResponseDto {
   errors {
     ...BaseError
   }

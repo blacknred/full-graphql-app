@@ -1,4 +1,4 @@
-fragment BaseError on FieldError {
+fragment BaseError on FieldErrorDto {
   field
   message
 }

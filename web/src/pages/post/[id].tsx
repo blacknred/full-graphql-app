@@ -8,7 +8,7 @@ import Meta from '../../components/Meta';
 import { PostItem } from '../../components/PostList/PostItem';
 import { Sidebar } from '../../components/Sidebar';
 import { Post, useGetPostQuery } from '../../typings';
-import urqlClient from '../../urqlClient';
+import urqlClient from '../../urql';
 
 interface IProps { }
 
