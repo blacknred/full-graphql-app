@@ -6,7 +6,7 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon --config nodemon.json src/index.ts",
-    "dev:debug": "DEBUG=graphql-server:* node --inspect-brk src/index.ts",
+    "dev:debug": "nodemon --config nodemon.json src/index.ts --debug 0.0.0.0:9229",
     "build": "rm -rf dist && tsc -p .",
     "start": "pm2 start dist",
     "lint": "tslint 'src/**/*.ts' '__tests__/**/*.test.ts'",
@@ -30,6 +30,7 @@
     }
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/graphql": "^14.5.0",
     "@types/koa": "^2.11.6",
     "@types/koa-cors": "^0.0.0",
@@ -50,7 +51,7 @@
     "typescript": "^4.1.3"
   },
   "dependencies": {
-    "argon2": "^0.27.1",
+    "bcryptjs": "^2.4.3",
     "dotenv": "^8.2.0",
     "email-validator": "^2.0.4",
     "graphql": "^15.5.1",

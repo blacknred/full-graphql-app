@@ -1,4 +1,4 @@
-import argon2 from "argon2";
+import crypt from "bcryptjs";
 import { v4 } from "uuid";
 import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
@@ -25,7 +25,7 @@ export class UsersService {
       return { errors: [error] };
     }
 
-    options.password = await argon2.hash(options.password);
+    options.password = crypt.hashSync(options.password);
     const user = await User.create(options).save();
     ctx.session!.userId = user.id;
     return { data: user };
@@ -50,7 +50,7 @@ export class UsersService {
       return { errors: [error] };
     }
 
-    const valid = await argon2.verify(
+    const valid = crypt.compareSync(
       user.password || "",
       options.password || ""
     );
@@ -116,7 +116,7 @@ export class UsersService {
       return { errors: [error] };
     }
 
-    user.password = await argon2.hash(options.password);
+    user.password = crypt.hashSync(options.password);
     await User.update(+userId, user);
     const html = emails.changedPassword();
     await smtp({ to: user.email, subject: "Password changed", html });

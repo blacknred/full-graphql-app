@@ -1,0 +1,89 @@
+version: "3.7"
+
+services:
+  cache:
+    container_name: cache
+    build: ./cache
+    env_file: ./.env.dev
+    volumes:
+      - "./cache/db-data:/data"
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD:-test}
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - backend
+    healthcheck:
+      test: exit 0
+
+  db:
+    container_name: db
+    build: ./db
+    env_file: ./.env.dev
+    volumes:
+      - "./db/db-data:/var/lib/postgresql/data"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER:-test}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-test}
+      - POSTGRES_DB=${POSTGRES_DB:-users_test}
+    restart: always
+    ports:
+      - "5432:5432"
+    networks:
+      - backend
+    healthcheck:
+      test: exit 0
+
+  api:
+    container_name: api
+    hostname: api
+    command: yarn dev
+    build:
+      context: ./api
+      target: development
+    env_file:
+      - ".env.dev"
+    volumes:
+      - "./api:/usr/src/app"
+      - "/usr/src/app/node_modules"
+    environment:
+      - NODE_ENV=development
+      - DB_URL=postgres://${POSTGRES_USER:-test}:${POSTGRES_PASSWORD:-test}@db:5432/${POSTGRES_DB:-test}
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-test}@cache:6379/0
+    depends_on:
+      - db
+      - cache
+    links:
+      - db
+      - cache
+    restart: always
+    ports:
+      - "8080:3000"
+    networks:
+      - backend
+      - frontend
+
+  client:
+    container_name: client
+    hostname: client
+    build:
+      context: ./web
+      target: development
+    volumes:
+      - ./web:/usr/src/app
+      - /usr/src/app/node_modules
+      - /usr/src/app/.next
+    ports:
+      - "3000:3000"
+    environment:
+      - API_HOST=localhost:8080
+    networks:
+      - frontend
+
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure
