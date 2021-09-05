@@ -6,7 +6,7 @@ import { PostInputDto } from "./dto";
 import { Post } from "./entity";
 
 export class PostsService {
-  async findPosts(ctx: AppCtx["ctx"], params: PaginatedInputDto) {
+  async findAll(ctx: AppCtx["ctx"], params: PaginatedInputDto) {
     const lim = Math.min(50, params.limit);
     const extraLim = lim + 1;
     const cur = params.cursor ? new Date(+params.cursor) : new Date();
@@ -51,7 +51,7 @@ export class PostsService {
     };
   }
 
-  async findPostById(ctx: AppCtx["ctx"], id: number) {
+  async findOne(ctx: AppCtx["ctx"], id: number) {
     const post = await Post.createQueryBuilder("p")
       .leftJoinAndSelect("p.creator", "p_creator")
       .leftJoinAndMapMany("p.votes", "vote", "v", "v.postId = p.id")
@@ -62,7 +62,7 @@ export class PostsService {
     return post;
   }
 
-  async createPost(ctx: AppCtx["ctx"], options: PostInputDto) {
+  async create(ctx: AppCtx["ctx"], options: PostInputDto) {
     const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
@@ -73,7 +73,7 @@ export class PostsService {
     return { data: post };
   }
 
-  async updatePost(ctx: AppCtx["ctx"], id: number, options: PostInputDto) {
+  async update(ctx: AppCtx["ctx"], id: number, options: PostInputDto) {
     const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
@@ -99,7 +99,7 @@ export class PostsService {
     return { data };
   }
 
-  async removePost(ctx: AppCtx["ctx"], id: number) {
+  async remove(ctx: AppCtx["ctx"], id: number) {
     const post = await Post.findOne(id);
     if (!post) {
       const error = {

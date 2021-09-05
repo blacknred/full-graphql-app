@@ -36,7 +36,7 @@ export class UserController {
     @Arg("options") options: RegisterInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<UserResponseDto> {
-    return this.usersService.createUser(ctx, options);
+    return this.usersService.create(ctx, options);
   }
 
   @Mutation(() => UserResponseDto)
@@ -44,12 +44,12 @@ export class UserController {
     @Arg("options") options: LoginInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<UserResponseDto> {
-    return this.usersService.loginUser(ctx, options);
+    return this.usersService.login(ctx, options);
   }
 
   @Mutation(() => Boolean)
   logout(@Ctx() { ctx }: AppCtx): boolean {
-    return this.usersService.logoutUser(ctx);
+    return this.usersService.logout(ctx);
   }
 
   @Mutation(() => UserResponseDto)

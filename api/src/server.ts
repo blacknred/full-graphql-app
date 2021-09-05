@@ -108,9 +108,9 @@ export default class Server {
       }
 
       /** check redis connection */
-      // if (!this.redis!.connected) {
-      //   throw new Error("Redis is not connected");
-      // }
+      if (!this.redis!.connected) {
+        throw new Error("Redis is not connected");
+      }
 
       /** application */
       const app = new Koa();

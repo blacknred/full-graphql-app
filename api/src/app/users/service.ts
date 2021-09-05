@@ -8,12 +8,7 @@ import { LoginInputDto, NewPasswordInputDto, RegisterInputDto } from "./dto";
 import { User } from "./entity";
 
 export class UsersService {
-  async findMe(ctx: AppCtx["ctx"]) {
-    if (!ctx.session!.userId) return undefined;
-    return User.findOne(+ctx.session!.userId);
-  }
-
-  async createUser(ctx: AppCtx["ctx"], options: RegisterInputDto) {
+  async create(ctx: AppCtx["ctx"], options: RegisterInputDto) {
     const errors = inputValidation<RegisterInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
@@ -31,7 +26,17 @@ export class UsersService {
     return { data: user };
   }
 
-  async loginUser(ctx: AppCtx["ctx"], options: LoginInputDto) {
+  async findMe(ctx: AppCtx["ctx"]) {
+    if (!ctx.session!.userId) return undefined;
+    return User.findOne(+ctx.session!.userId);
+  }
+
+  logout(ctx: AppCtx["ctx"]) {
+    ctx.session = null;
+    return true;
+  }
+
+  async login(ctx: AppCtx["ctx"], options: LoginInputDto) {
     const errors = inputValidation<LoginInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
@@ -65,11 +70,6 @@ export class UsersService {
 
     ctx.session!.userId = user.id;
     return { data: user };
-  }
-
-  logoutUser(ctx: AppCtx["ctx"]) {
-    ctx.session = null;
-    return true;
   }
 
   async forgotPassword({ kv, smtp, ctx }: AppCtx, email: string) {

@@ -34,7 +34,7 @@ export class PostController {
     @Arg("params") params: PaginatedInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostsResponseDto> {
-    return this.postsService.findPosts(ctx, params);
+    return this.postsService.findAll(ctx, params);
   }
 
   @Query(() => Post, { nullable: true })
@@ -42,7 +42,7 @@ export class PostController {
     @Arg("id") id: number,
     @Ctx() { ctx }: AppCtx
   ): Promise<Post | undefined> {
-    return this.postsService.findPostById(ctx, id);
+    return this.postsService.findOne(ctx, id);
   }
 
   @Mutation(() => PostResponseDto)
@@ -51,7 +51,7 @@ export class PostController {
     @Arg("options") options: PostInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
-    return this.postsService.createPost(ctx, options);
+    return this.postsService.create(ctx, options);
   }
 
   @Mutation(() => PostResponseDto, { nullable: true })
@@ -61,7 +61,7 @@ export class PostController {
     @Arg("options") options: PostInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
-    return this.postsService.updatePost(ctx, id, options);
+    return this.postsService.update(ctx, id, options);
   }
 
   @Mutation(() => PostResponseDto)
@@ -70,7 +70,7 @@ export class PostController {
     @Arg("id") id: number,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
-    return this.postsService.removePost(ctx, id);
+    return this.postsService.remove(ctx, id);
   }
 
   @Mutation(() => VoteResponseDto)
