@@ -6,7 +6,7 @@ import {
 import NextLink from 'next/link';
 import { Post } from '../../../typings';
 import { getRandBgColor, timeSince } from '../../../utils';
-import { VoteSection } from '../../VoteSection';
+import { VoteSection } from './VoteSection';
 
 interface IProps {
   data: Post

@@ -8,7 +8,7 @@ Auth, Article Posting
 | ------------------- | --------------| -------------------------- | ----- |
 | DB                  | db            | Postgres                   | 5432  |
 | Cache               | cache         | Redis                      | 6379  |
-| API service         | api           | TS, Koa, Http, GrahpQL     | 8080  |
+| API service         | api           | TS, Koa, Http, GraphQL     | 8080  |
 | Web client          | client        | TS, NextJS, Urql, ChakraUI | 3000  |
 
 ## Run the project
@@ -27,8 +27,8 @@ Auth, Article Posting
 
    ```sh
    make network
-   make test:check
-   make test
+   make dev-check
+   make dev
    ```
 
 ### Production
@@ -39,6 +39,6 @@ Auth, Article Posting
 
    ```sh
    make network
-   make prod:buid
+   make prod-build
    make prod
    ```

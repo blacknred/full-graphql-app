@@ -2,14 +2,14 @@ import { Cache, cacheExchange, CacheExchangeOpts, Resolver } from '@urql/exchang
 import router from 'next/router';
 import { dedupExchange, Exchange, fetchExchange, gql, stringifyVariables } from 'urql';
 import { pipe, tap } from 'wonka';
-import { DeletePostMutationVariables, LoginMutation, LogoutMutation, MeDocument, MeQuery, RegisterMutation, VoteMutation } from './typings';
+import { CreateAuthMutation, CreateUserMutation, CreateVoteMutation, DeleteAuthMutation, DeletePostMutationVariables, GetAuthDocument, GetAuthQuery } from './typings';
 import { customUpdateQuery, isServer } from './utils';
 
 const ErrorExchange: Exchange = ({ forward }) => (ops$) => {
   return pipe(
     forward(ops$),
     tap(({ error }) => {
-      if (error?.message.includes('ot authenticated')) {
+      if (error?.message.includes('t authenticated')) {
         router.replace('/login')
       }
     })
@@ -58,24 +58,24 @@ const cachePolicy: CacheExchangeOpts = {
       createPost: (_, __, cache) => {
         invalidatePosts(cache)
       },
-      vote: ({ vote }: VoteMutation, { postId }, cache) => {
-        if (!vote.errors) {
-          cache.writeFragment(gql`fragment _ on Post { rating }`, { id: postId, rating: vote.data })
+      createVote: ({ createVote }: CreateVoteMutation, { postId }, cache) => {
+        if (!createVote.errors) {
+          cache.writeFragment(gql`fragment _ on Post { rating }`, { id: postId, rating: createVote.data })
         }
       },
-      logout: (_result: LogoutMutation, _, cache) => {
-        customUpdateQuery<LogoutMutation, MeQuery>(cache, { query: MeDocument }, _result, () => ({ me: null }))
+      deleteAuth: (_result: DeleteAuthMutation, _, cache) => {
+        customUpdateQuery<DeleteAuthMutation, GetAuthQuery>(cache, { query: GetAuthDocument }, _result, () => ({ getAuth: null }))
         invalidatePosts(cache)
       },
-      login: (_result: LoginMutation, _, cache) => {
-        customUpdateQuery<LoginMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
-          return result.login.errors ? query : { me: result.login.data };
+      createAuth: (_result: CreateAuthMutation, _, cache) => {
+        customUpdateQuery<CreateAuthMutation, GetAuthQuery>(cache, { query: GetAuthDocument }, _result, (result, query) => {
+          return result.createAuth.errors ? query : { getAuth: result.createAuth.data };
         })
         invalidatePosts(cache)
       },
-      register: (_result: RegisterMutation, _, cache) => {
-        customUpdateQuery<RegisterMutation, MeQuery>(cache, { query: MeDocument }, _result, (result, query) => {
-          return result.register.errors ? query : { me: result.register.data };
+      createUser: (_result: CreateUserMutation, _, cache) => {
+        customUpdateQuery<CreateUserMutation, GetAuthQuery>(cache, { query: GetAuthDocument }, _result, (result, query) => {
+          return result.createUser.errors ? query : { getAuth: result.createUser.data };
         })
       },
     }

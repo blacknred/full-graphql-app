@@ -4,12 +4,12 @@ import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
 import emails from "../../utils/mailTemplates";
 import { FieldErrorDto } from "../../utils/sharedDto";
-import { LoginInputDto, NewPasswordInputDto, RegisterInputDto } from "./dto";
-import { User } from "./entity";
+import { NewPasswordInputDto, UserInputDto } from "./dto";
+import { User } from "./user.entity";
 
 export class UsersService {
-  async create(ctx: AppCtx["ctx"], options: RegisterInputDto) {
-    const errors = inputValidation<RegisterInputDto, FieldErrorDto>(options);
+  async create(ctx: AppCtx["ctx"], options: UserInputDto) {
+    const errors = inputValidation<UserInputDto, FieldErrorDto>(options);
     if (errors) return { errors };
 
     if (await User.findOne({ username: options.username })) {
@@ -26,53 +26,7 @@ export class UsersService {
     return { data: user };
   }
 
-  async findMe(ctx: AppCtx["ctx"]) {
-    if (!ctx.session!.userId) return undefined;
-    return User.findOne(+ctx.session!.userId);
-  }
-
-  logout(ctx: AppCtx["ctx"]) {
-    ctx.session = null;
-    return true;
-  }
-
-  async login(ctx: AppCtx["ctx"], options: LoginInputDto) {
-    const errors = inputValidation<LoginInputDto, FieldErrorDto>(options);
-    if (errors) return { errors };
-
-    const user = await User.findOne({
-      where: [
-        { username: options.usernameOrEmail },
-        { email: options.usernameOrEmail },
-      ],
-    });
-
-    if (!user) {
-      const error = {
-        field: "usernameOrEmail",
-        message: "Such a user does not exist",
-      };
-      return { errors: [error] };
-    }
-
-    const valid = crypt.compareSync(
-      user.password || "",
-      options.password || ""
-    );
-
-    if (!valid) {
-      const error = {
-        field: "password",
-        message: "Incorrect password",
-      };
-      return { errors: [error] };
-    }
-
-    ctx.session!.userId = user.id;
-    return { data: user };
-  }
-
-  async forgotPassword({ kv, smtp, ctx }: AppCtx, email: string) {
+  async changePassword({ kv, smtp, ctx }: AppCtx, email: string) {
     const errors = inputValidation<{ email: typeof email }, FieldErrorDto>({
       email,
     });

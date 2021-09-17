@@ -4,12 +4,11 @@ import {
   Column,
   Entity,
   ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  OneToMany, PrimaryGeneratedColumn,
+  UpdateDateColumn
 } from "typeorm";
-import { User } from "../users/entity";
-import { Vote } from "../votes/entity";
+import { User } from "../users/user.entity";
+import { Vote } from "./vote.entity";
 
 @Entity()
 @ObjectType()

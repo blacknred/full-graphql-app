@@ -17,7 +17,7 @@ import {
   PostsResponseDto,
   VoteResponseDto
 } from "./dto";
-import { Post } from "./entity";
+import { Post } from "./post.entity";
 import { PostsService } from "./service";
 
 @Resolver(Post)
@@ -75,7 +75,7 @@ export class PostController {
 
   @Mutation(() => VoteResponseDto)
   @UseMiddleware(checkAuth)
-  async vote(
+  async createVote(
     @Arg("postId") postId: number,
     @Arg("value") value: 1 | -1,
     @Ctx() { ctx }: AppCtx

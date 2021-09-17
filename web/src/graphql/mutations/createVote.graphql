@@ -1,0 +1,8 @@
+mutation CreateVote($postId: Float!, $value: Float!) {
+  createVote(postId: $postId, value: $value) {
+    errors {
+      ...BaseError
+    },
+    data
+  }
+}

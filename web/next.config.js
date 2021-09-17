@@ -7,5 +7,8 @@ module.exports = {
     }
     return config
   },
-  reactStrictMode: true
+  reactStrictMode: true,
+  env: {
+    API_HOST: process.env.API_HOST,
+  }
 }

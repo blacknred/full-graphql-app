@@ -7,7 +7,7 @@ import React from 'react';
 import InputField from '../components/InputField';
 import Layout from '../components/Layout';
 import Meta from '../components/Meta';
-import { useLoginMutation } from '../typings';
+import { useCreateAuthMutation } from '../typings';
 import urqlClient from '../urql';
 import { errorMap } from '../utils';
 
@@ -20,7 +20,7 @@ interface IProps { }
 
 const Login: React.FC<IProps> = ({ }) => {
    const router = useRouter();
-  const [, register] = useLoginMutation();
+  const [, register] = useCreateAuthMutation();
   const notification = authMessages[router.asPath.split('#')[1] as keyof typeof authMessages]
 
   return (
@@ -31,8 +31,8 @@ const Login: React.FC<IProps> = ({ }) => {
         onSubmit={(values, actions) => {
           register(values)
             .then(res => {
-              if (res.data?.login.errors) {
-                actions.setErrors(errorMap(res.data.login.errors));
+              if (res.data?.createAuth.errors) {
+                actions.setErrors(errorMap(res.data.createAuth.errors));
               } else {
                 const target = typeof router.query.next === 'string' ? router.query.next : '/'
                 router.push(target)

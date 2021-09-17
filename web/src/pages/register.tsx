@@ -7,14 +7,14 @@ import React, { FC } from 'react';
 import InputField from '../components/InputField';
 import Layout from '../components/Layout';
 import Meta from '../components/Meta';
-import { useRegisterMutation } from '../typings';
+import { useCreateUserMutation } from '../typings';
 import urqlClient from '../urql';
 import { errorMap } from '../utils';
 
 interface IProps { }
 
 const Register: FC<IProps> = ({ }) => {
-  const [, register] = useRegisterMutation();
+  const [, register] = useCreateUserMutation();
   const router = useRouter();
 
   return (
@@ -25,8 +25,8 @@ const Register: FC<IProps> = ({ }) => {
         onSubmit={(values, actions) => {
           register(values)
             .then(res => {
-              if (res.data?.register.errors) {
-                actions.setErrors(errorMap(res.data.register.errors));
+              if (res.data?.createUser.errors) {
+                actions.setErrors(errorMap(res.data.createUser.errors));
               } else {
                 router.push('/')
               }

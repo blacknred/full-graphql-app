@@ -2,19 +2,16 @@ import {
   Arg,
   Ctx,
   FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
+  Mutation, Resolver,
   Root
 } from "type-graphql";
 import { AppCtx } from "../../typings";
 import {
-  LoginInputDto,
   NewPasswordInputDto,
-  RegisterInputDto,
+  UserInputDto,
   UserResponseDto
 } from "./dto";
-import { User } from "./entity";
+import { User } from "./user.entity";
 import { UsersService } from "./service";
 
 @Resolver(User)
@@ -26,42 +23,24 @@ export class UserController {
     return ctx.session!.userId === user.id ? user.email : "";
   }
 
-  @Query(() => User, { nullable: true })
-  async me(@Ctx() { ctx }: AppCtx): Promise<User | undefined> {
-    return this.usersService.findMe(ctx);
-  }
-
   @Mutation(() => UserResponseDto)
-  async register(
-    @Arg("options") options: RegisterInputDto,
+  async createUser(
+    @Arg("options") options: UserInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<UserResponseDto> {
     return this.usersService.create(ctx, options);
   }
 
   @Mutation(() => UserResponseDto)
-  async login(
-    @Arg("options") options: LoginInputDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<UserResponseDto> {
-    return this.usersService.login(ctx, options);
-  }
-
-  @Mutation(() => Boolean)
-  logout(@Ctx() { ctx }: AppCtx): boolean {
-    return this.usersService.logout(ctx);
-  }
-
-  @Mutation(() => UserResponseDto)
-  async forgotPassword(
+  async changePassword(
     @Arg("email") email: string,
     @Ctx() ctx: AppCtx
   ): Promise<UserResponseDto> {
-    return this.usersService.forgotPassword(ctx, email);
+    return this.usersService.changePassword(ctx, email);
   }
 
   @Mutation(() => UserResponseDto)
-  async changePassword(
+  async updatePassword(
     @Arg("options") options: NewPasswordInputDto,
     @Ctx() ctx: AppCtx
   ): Promise<UserResponseDto> {

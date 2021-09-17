@@ -1,11 +1,10 @@
 import { ArrowForwardIcon, ExternalLinkIcon, MoonIcon, SunIcon } from '@chakra-ui/icons';
 import { Box, Button, Flex, Heading, IconButton, useColorMode, useColorModeValue } from '@chakra-ui/react';
 import NextLink from 'next/link';
-import router from 'next/router';
 import { FC } from 'react';
 import {
-  useLogoutMutation,
-  useMeQuery
+  useDeleteAuthMutation,
+  useGetAuthQuery
 } from '../../typings';
 
 interface IProps {
@@ -14,8 +13,8 @@ interface IProps {
 
 const Layout: FC<IProps> = ({ children, variant = 'lg' }) => {
   const { colorMode, toggleColorMode } = useColorMode()
-  const [{ data }] = useMeQuery();
-  const [{ fetching }, logout] = useLogoutMutation();
+  const [{ data }] = useGetAuthQuery();
+  const [{ fetching }, logout] = useDeleteAuthMutation();
   const width = variant === 'lg' ? 1050 : 400;
   const bg = useColorModeValue("gray.900", "gray.50")
   const color = useColorModeValue('gray.300', 'gray.600')
@@ -26,9 +25,9 @@ const Layout: FC<IProps> = ({ children, variant = 'lg' }) => {
         <NextLink href="/"><Heading color={color} cursor="pointer" fontSize="xx-large">Pikaru</Heading></NextLink>
         {variant === 'lg' && (
           <Box>
-            {data?.me ? (
+            {data?.getAuth ? (
               <>
-                <Button variant="link" color={color} size="md">{data?.me?.username}</Button>
+                <Button variant="link" color={color} size="md">{data?.getAuth?.username}</Button>
                 <IconButton
                   ml={4}
                   aria-label="Logout"

@@ -1,5 +1,5 @@
 overwrite: true
-schema: "http://localhost:4000"
+schema: "http://localhost:8080"
 documents: "src/graphql/**/**.graphql"
 generates:
   src/typings.ts:

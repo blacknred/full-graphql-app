@@ -1,6 +1,6 @@
 import { Field, InputType, ObjectType } from "type-graphql";
 import { PaginatedResponseDto, ValidatedResponseDto } from "../../utils/sharedDto";
-import { Post } from "./entity";
+import { Post } from "./post.entity";
 
 @InputType()
 export class PostInputDto {

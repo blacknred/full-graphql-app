@@ -3,7 +3,7 @@ import { Box, Button, Select, Stack, useColorModeValue } from '@chakra-ui/react'
 import router from 'next/router';
 import React, { LegacyRef, useRef } from 'react';
 import useOnViewport from '../../hooks/useOnViewport';
-import { Post, useDeletePostMutation, useMeQuery } from '../../typings';
+import { Post, useDeletePostMutation, useGetAuthQuery } from '../../typings';
 import { getRandBgColor } from '../../utils';
 import AuthLink from '../AuthLink';
 
@@ -13,7 +13,7 @@ interface IProps {
 }
 
 export const Sidebar = ({ type = 'default', post }: IProps) => {
-  const [{ data }] = useMeQuery();
+  const [{ data }] = useGetAuthQuery();
   const fixedRef = useRef<HTMLDivElement>(null);
   const saturation = useColorModeValue(400, 100)
   const bg = useColorModeValue('gray.800', 'white')
@@ -24,7 +24,6 @@ export const Sidebar = ({ type = 'default', post }: IProps) => {
     fixedRef.current.style.top = isVisible ? 'auto' : '0px';
     fixedRef.current.style.width = isVisible ? 'initial' : '290px';
   });
-console.log(data?.me?.id, post?.creatorId);
 
   return (
     <>
@@ -44,7 +43,7 @@ console.log(data?.me?.id, post?.creatorId);
             </Select>
           </Box>
         )}
-        {type === 'post' && data?.me?.id === post?.creatorId && (
+        {type === 'post' && data?.getAuth?.id === post?.creatorId && (
           <Box bg={bg} h={200} p="4">
             <Button
               mb="4"

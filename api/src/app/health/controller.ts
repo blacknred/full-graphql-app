@@ -7,7 +7,7 @@ export class HeathController {
   private heathService = new HealthService();
 
   @Query(() => HealthResponseDto)
-  async health() {
+  async getHealth() {
     return this.heathService.check();
   }
 }

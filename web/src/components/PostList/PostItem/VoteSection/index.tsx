@@ -1,6 +1,6 @@
 import { TriangleDownIcon, TriangleUpIcon } from '@chakra-ui/icons';
 import { Flex, Heading, IconButton, Spinner, useColorModeValue } from '@chakra-ui/react';
-import { Post, useMeQuery, useVoteMutation, Vote } from '../../typings';
+import { Post, useCreateVoteMutation, useGetAuthQuery, Vote } from '../../../../typings';
 
 interface IProps {
   rating: Post['rating'];
@@ -11,13 +11,13 @@ interface IProps {
 export const VoteSection = ({ rating: total = 0, value, postId }: IProps) => {
   const color = useColorModeValue('gray.300', 'blackAlpha')
   // const color = useColorModeValue('300', 'blackAlpha')
-  const [{ fetching }, vote] = useVoteMutation();
-  const [{ data }] = useMeQuery();
+  const [{ fetching }, vote] = useCreateVoteMutation();
+  const [{ data }] = useGetAuthQuery();
 
   return (
     <Flex direction="column" justifyContent="center" alignItems="center" mr={3}>
       <IconButton
-        disabled={!data?.me}
+        disabled={!data?.getAuth}
         color={value === 1 ? 'teal.500' : 'gray.300'}
         variant="ghost"
         fontSize="xx-large"
@@ -27,7 +27,7 @@ export const VoteSection = ({ rating: total = 0, value, postId }: IProps) => {
       />
       {fetching ? <Spinner /> : <Heading color={color} size="sm">{total}</Heading>}
       <IconButton
-        disabled={!data?.me}
+        disabled={!data?.getAuth}
         color={value === -1 ? 'pink.500' : 'gray.300'}
         variant="ghost"
         fontSize="xx-large"

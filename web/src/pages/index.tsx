@@ -35,7 +35,6 @@ const Index = () => {
           <SlideFade in offsetY="80px" style={{ width: '100%' }}>
             {!data && !fetching && <Center mt="100"><WarningTwoIcon color="teal.300" fontSize="6xl" /></Center>}
             {data && <PostList items={data.getPosts.items as Post[]} />}
-
             {data?.getPosts.hasMore && (
               <Center m="6"><Button colorScheme="cyan" color="blackAlpha.300" size="lg" m="auto" fontSize="2xl" isLoading/></Center>
             )}

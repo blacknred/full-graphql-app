@@ -6,14 +6,14 @@ import React from 'react';
 import InputField from '../../components/InputField';
 import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
-import { useChangePasswordMutation } from '../../typings';
+import { useUpdatePasswordMutation } from '../../typings';
 import urqlClient from '../../urql';
 import { errorMap } from '../../utils';
 
 interface IProps { }
 
 const ChangePassword: React.FC<IProps> = ({ }) => {
-  const [, changePassword] = useChangePasswordMutation();
+  const [, changePassword] = useUpdatePasswordMutation();
   const router = useRouter();
 
   return (
@@ -30,8 +30,8 @@ const ChangePassword: React.FC<IProps> = ({ }) => {
 
           changePassword({ token: router.query.token as string, password: values.password })
             .then(res => {
-              if (res.data?.changePassword.errors) {
-                actions.setErrors(errorMap(res.data.changePassword.errors));
+              if (res.data?.updatePassword.errors) {
+                actions.setErrors(errorMap(res.data.updatePassword.errors));
               } else {
                 router.push({ pathname: '/login', hash: 'new-password-done' })
               }

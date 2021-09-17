@@ -1,18 +1,16 @@
 
 import Link from 'next/link';
 import React from 'react';
-import {
-  useMeQuery
-} from '../../typings';
+import { useGetAuthQuery } from '../../typings';
 
 interface IProps {
   href: string
 }
 
 const AuthLink: React.FC<IProps> = ({ children, href }) => {
-  const [{ data }] = useMeQuery();
+  const [{ data }] = useGetAuthQuery();
 
-  return <Link href={data?.me ? href : `/login?next=${href}`}>{children}</Link>;
+  return <Link href={data?.getAuth ? href : `/login?next=${href}`}>{children}</Link>;
 }
 
 export default AuthLink

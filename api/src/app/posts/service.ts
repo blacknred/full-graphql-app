@@ -1,9 +1,9 @@
 import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
 import { FieldErrorDto, PaginatedInputDto } from "../../utils/sharedDto";
-import { Vote } from "../votes/entity";
 import { PostInputDto } from "./dto";
-import { Post } from "./entity";
+import { Post } from "./post.entity";
+import { Vote } from "./vote.entity";
 
 export class PostsService {
   async findAll(ctx: AppCtx["ctx"], params: PaginatedInputDto) {

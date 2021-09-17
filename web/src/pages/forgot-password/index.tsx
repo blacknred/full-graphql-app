@@ -6,14 +6,14 @@ import React from 'react';
 import InputField from '../../components/InputField';
 import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
-import { useForgotPasswordMutation } from '../../typings';
+import { useChangePasswordMutation } from '../../typings';
 import urqlClient from '../../urql';
 import { errorMap } from '../../utils';
 
 interface IProps { }
 
 const ForgotPassword: React.FC<IProps> = ({ }) => {
-  const [, forgotPassword] = useForgotPasswordMutation();
+  const [, forgotPassword] = useChangePasswordMutation();
 
   return (
     <Layout variant="sm">
@@ -23,8 +23,8 @@ const ForgotPassword: React.FC<IProps> = ({ }) => {
         onSubmit={(values, actions) => {
           forgotPassword(values)
             .then(res => {
-              if (res.data?.forgotPassword.errors) {
-                actions.setErrors(errorMap(res.data.forgotPassword.errors));
+              if (res.data?.changePassword.errors) {
+                actions.setErrors(errorMap(res.data.changePassword.errors));
               } else {
                 router.push({ pathname: '/login', hash: 'new-password-sent' })
               }

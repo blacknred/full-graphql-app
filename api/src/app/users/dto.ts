@@ -1,23 +1,15 @@
 import { Field, InputType, ObjectType } from "type-graphql";
 import { ValidatedResponseDto } from "../../utils/sharedDto";
-import { User } from "./entity";
+import { User } from "./user.entity";
 
 @InputType()
-export class RegisterInputDto {
+export class UserInputDto {
   @Field()
   username!: string;
   @Field()
   password!: string;
   @Field()
   email!: string;
-}
-
-@InputType()
-export class LoginInputDto {
-  @Field()
-  usernameOrEmail!: string;
-  @Field()
-  password!: string;
 }
 
 @InputType()

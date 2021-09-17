@@ -8,11 +8,10 @@ import * as path from "path";
 //     `.env.${process.env.NODE_ENV || "development"}`
 //   ),
 // });
-console.log(process.env.REDIS_URL);
 
 const config = {} as __Config__;
 
-config.__port__ = process.env.PORT || 4000;
+config.__port__ = process.env.PORT || 3000;
 config.__prod__ = process.env.NODE_ENV === "production";
 config.__secret__ = process.env.SECRET || "secret";
 config.__clients__ = process.env.CLIENT_HOSTS
@@ -39,7 +38,7 @@ config.session = {
 };
 
 config.db = {
-  entities: [path.join(__dirname, "/app/*/entity.{ts,js}")],
+  entities: [path.join(__dirname, "/app/*/*.entity.{ts,js}")],
   migrations: [path.join(__dirname, "../", "migration/*.ts")],
   type: "postgres", 
   url: process.env.DB_URL,
