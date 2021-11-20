@@ -48,17 +48,17 @@ export type Mutation = {
 
 
 export type MutationCreateAuthArgs = {
-  options: AuthInputDto;
+  dto: AuthInputDto;
 };
 
 
 export type MutationCreatePostArgs = {
-  options: PostInputDto;
+  dto: PostInputDto;
 };
 
 
 export type MutationUpdatePostArgs = {
-  options: PostInputDto;
+  dto: PostInputDto;
   id: Scalars['Float'];
 };
 
@@ -75,7 +75,7 @@ export type MutationCreateVoteArgs = {
 
 
 export type MutationCreateUserArgs = {
-  options: UserInputDto;
+  dto: UserInputDto;
 };
 
 
@@ -85,7 +85,7 @@ export type MutationChangePasswordArgs = {
 
 
 export type MutationUpdatePasswordArgs = {
-  options: NewPasswordInputDto;
+  dto: NewPasswordInputDto;
 };
 
 export type NewPasswordInputDto = {
@@ -453,7 +453,7 @@ export function useChangePasswordMutation() {
 };
 export const CreateAuthDocument = gql`
     mutation CreateAuth($usernameOrEmail: String!, $password: String!) {
-  createAuth(options: {usernameOrEmail: $usernameOrEmail, password: $password}) {
+  createAuth(dto: {usernameOrEmail: $usernameOrEmail, password: $password}) {
     ...BaseUserResponse
   }
 }
@@ -464,7 +464,7 @@ export function useCreateAuthMutation() {
 };
 export const CreatePostDocument = gql`
     mutation CreatePost($title: String!, $text: String!) {
-  createPost(options: {title: $title, text: $text}) {
+  createPost(dto: {title: $title, text: $text}) {
     ...BasePostResponse
   }
 }
@@ -475,7 +475,7 @@ export function useCreatePostMutation() {
 };
 export const CreateUserDocument = gql`
     mutation CreateUser($username: String!, $email: String!, $password: String!) {
-  createUser(options: {username: $username, email: $email, password: $password}) {
+  createUser(dto: {username: $username, email: $email, password: $password}) {
     ...BaseUserResponse
   }
 }
@@ -486,7 +486,7 @@ export function useCreateUserMutation() {
 };
 export const CreateVoteDocument = gql`
     mutation CreateVote($postId: Float!, $value: Float!) {
-  createVote(postId: $postId, value: $value) {
+  createVote(dto: { postId: $postId, value: $value }) {
     errors {
       ...BaseError
     }
@@ -522,7 +522,7 @@ export function useDeletePostMutation() {
 };
 export const UpdatePasswordDocument = gql`
     mutation UpdatePassword($token: String!, $password: String!) {
-  updatePassword(options: {token: $token, password: $password}) {
+  updatePassword(dto: {token: $token, password: $password}) {
     errors {
       ...BaseError
     }
@@ -541,8 +541,8 @@ export const GetAuthDocument = gql`
 }
     ${BaseUserFragmentDoc}`;
 
-export function useGetAuthQuery(options: Omit<Urql.UseQueryArgs<GetAuthQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<GetAuthQuery>({ query: GetAuthDocument, ...options });
+export function useGetAuthQuery(dto: Omit<Urql.UseQueryArgs<GetAuthQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetAuthQuery>({ query: GetAuthDocument, ...dto });
 };
 export const GetPostDocument = gql`
     query GetPost($id: Float!) {
@@ -553,8 +553,8 @@ export const GetPostDocument = gql`
 }
     ${BasePostFragmentDoc}`;
 
-export function useGetPostQuery(options: Omit<Urql.UseQueryArgs<GetPostQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<GetPostQuery>({ query: GetPostDocument, ...options });
+export function useGetPostQuery(dto: Omit<Urql.UseQueryArgs<GetPostQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPostQuery>({ query: GetPostDocument, ...dto });
 };
 export const GetPostsDocument = gql`
     query GetPosts($limit: Float!, $cursor: String!, $sorting: String!) {
@@ -568,6 +568,6 @@ export const GetPostsDocument = gql`
 }
     ${BasePostFragmentDoc}`;
 
-export function useGetPostsQuery(options: Omit<Urql.UseQueryArgs<GetPostsQueryVariables>, 'query'> = {}) {
-  return Urql.useQuery<GetPostsQuery>({ query: GetPostsDocument, ...options });
+export function useGetPostsQuery(dto: Omit<Urql.UseQueryArgs<GetPostsQueryVariables>, 'query'> = {}) {
+  return Urql.useQuery<GetPostsQuery>({ query: GetPostsDocument, ...dto });
 };

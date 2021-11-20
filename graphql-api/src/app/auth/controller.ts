@@ -10,7 +10,7 @@ import {
 import { AppCtx } from "../../typings";
 import { UserResponseDto } from "../users/dto";
 import { User } from "../users/user.entity";
-import { AuthInputDto } from "./dto";
+import { CreateAuthDto } from "./dto";
 import { AuthService } from "./service";
 
 @Resolver(User)
@@ -24,10 +24,10 @@ export class UserController {
 
   @Mutation(() => UserResponseDto)
   async createAuth(
-    @Arg("options") options: AuthInputDto,
+    @Arg("dto") dto: CreateAuthDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<UserResponseDto> {
-    return this.authService.create(ctx, options);
+    return this.authService.create(ctx, dto);
   }
 
   @Query(() => User, { nullable: true })

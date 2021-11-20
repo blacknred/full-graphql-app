@@ -1,5 +1,5 @@
 mutation CreatePost($title: String!, $text: String!) {
-  createPost(options: { title: $title, text: $text }) {
+  createPost(dto: { title: $title, text: $text }) {
     ...BasePostResponse
   }
 }

@@ -1,19 +1,14 @@
 import crypt from "bcryptjs";
 import { AppCtx } from "../../typings";
-import inputValidation from "../../utils/inputValidation";
-import { FieldErrorDto } from "../__shared__/dto/response";
-import { AuthInputDto } from "./dto";
 import { User } from "../users/user.entity";
+import { CreateAuthDto } from "./dto";
 
 export class AuthService {
-  async create(ctx: AppCtx["ctx"], options: AuthInputDto) {
-    const errors = inputValidation<AuthInputDto, FieldErrorDto>(options);
-    if (errors) return { errors };
-
+  async create(ctx: AppCtx["ctx"], dto: CreateAuthDto) {
     const user = await User.findOne({
       where: [
-        { username: options.usernameOrEmail },
-        { email: options.usernameOrEmail },
+        { username: dto.usernameOrEmail },
+        { email: dto.usernameOrEmail },
       ],
     });
 
@@ -26,8 +21,8 @@ export class AuthService {
     }
 
     const valid = await crypt.compare(
-      options.password || "",
-      user.password || "",
+      dto.password || "",
+      user.password || ""
     );
 
     if (!valid) {

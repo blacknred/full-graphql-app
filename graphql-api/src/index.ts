@@ -1,6 +1,5 @@
 import Server from "./server";
-import config from "./utils/config";
-import validateEnv from "./utils/validateEnv";
+import config, { validateEnv } from "./utils/config";
 
 validateEnv();
 

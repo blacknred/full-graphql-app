@@ -1,5 +1,5 @@
 mutation CreateAuth($usernameOrEmail: String!, $password: String!) {
-  createAuth(options: { usernameOrEmail: $usernameOrEmail, password: $password }) {
+  createAuth(dto: { usernameOrEmail: $usernameOrEmail, password: $password }) {
     ...BaseUserResponse
   }
 }

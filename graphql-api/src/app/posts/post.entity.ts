@@ -8,7 +8,7 @@ import {
   UpdateDateColumn
 } from "typeorm";
 import { User } from "../users/user.entity";
-import { Vote } from "./vote.entity";
+import { Vote } from "../votes/vote.entity";
 
 @Entity()
 @ObjectType()

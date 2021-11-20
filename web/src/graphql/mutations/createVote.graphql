@@ -1,5 +1,5 @@
 mutation CreateVote($postId: Float!, $value: Float!) {
-  createVote(postId: $postId, value: $value) {
+  createVote(dto: { postId: $postId, value: $value }) {
     errors {
       ...BaseError
     },

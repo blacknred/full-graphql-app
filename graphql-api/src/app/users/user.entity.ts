@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Post } from "../posts/post.entity";
-import { Vote } from "../posts/vote.entity";
+import { Vote } from "../votes/vote.entity";
 
 @ObjectType()
 @Entity()
@@ -36,13 +36,4 @@ export class User extends BaseEntity {
   @OneToMany(() => Vote, vote => vote.user)
   votes!: Vote[]
 }
-
-// export async function set(id, value) {
-//   await db.query(sql`
-//     INSERT INTO my_data (id, data)
-//     VALUES (${id}, ${value})
-//     ON CONFLICT id
-//     DO UPDATE SET data = EXCLUDED.data;
-//   `);
-// }
 

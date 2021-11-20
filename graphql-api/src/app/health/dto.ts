@@ -4,10 +4,13 @@ import { Field, ObjectType } from "type-graphql";
 export class HealthResponseDto {
   @Field()
   status!: "OK" | "NOT OK";
+
   @Field()
   tz!: string;
+
   @Field()
   uptime!: string;
+  
   @Field()
   activeConnections!: number;
 }

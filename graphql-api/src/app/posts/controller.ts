@@ -6,16 +6,16 @@ import {
   Query,
   Resolver,
   Root,
-  UseMiddleware
+  UseMiddleware,
 } from "type-graphql";
 import checkAuth from "../../middleware/checkAuth";
 import { AppCtx } from "../../typings";
 import { PaginatedInputDto } from "../__shared__/dto/response";
 import {
-  PostInputDto,
+  CreatePostDto,
   PostResponseDto,
   PostsResponseDto,
-  VoteResponseDto
+  UpdatePostDto,
 } from "./dto";
 import { Post } from "./post.entity";
 import { PostsService } from "./service";
@@ -30,7 +30,7 @@ export class PostController {
   }
 
   @Query(() => PostsResponseDto)
-  async getPosts(
+  async getMany(
     @Arg("params") params: PaginatedInputDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostsResponseDto> {
@@ -38,7 +38,7 @@ export class PostController {
   }
 
   @Query(() => Post, { nullable: true })
-  async getPost(
+  async getOne(
     @Arg("id") id: number,
     @Ctx() { ctx }: AppCtx
   ): Promise<Post | undefined> {
@@ -47,39 +47,28 @@ export class PostController {
 
   @Mutation(() => PostResponseDto)
   @UseMiddleware(checkAuth)
-  async createPost(
-    @Arg("options") options: PostInputDto,
+  async create(
+    @Arg("dto") dto: CreatePostDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
-    return this.postsService.create(ctx, options);
+    return this.postsService.create(ctx, dto);
   }
 
   @Mutation(() => PostResponseDto, { nullable: true })
   @UseMiddleware(checkAuth)
-  async updatePost(
-    @Arg("id") id: number,
-    @Arg("options") options: PostInputDto,
+  async update(
+    @Arg("dto") dto: UpdatePostDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
-    return this.postsService.update(ctx, id, options);
+    return this.postsService.update(ctx, dto);
   }
 
   @Mutation(() => PostResponseDto)
   @UseMiddleware(checkAuth)
-  async deletePost(
+  async delete(
     @Arg("id") id: number,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostResponseDto> {
     return this.postsService.remove(ctx, id);
-  }
-
-  @Mutation(() => VoteResponseDto)
-  @UseMiddleware(checkAuth)
-  async createVote(
-    @Arg("postId") postId: number,
-    @Arg("value") value: 1 | -1,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<VoteResponseDto> {
-    return this.postsService.createVote(ctx, postId, value);
   }
 }

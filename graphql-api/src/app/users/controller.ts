@@ -2,17 +2,14 @@ import {
   Arg,
   Ctx,
   FieldResolver,
-  Mutation, Resolver,
-  Root
+  Mutation,
+  Resolver,
+  Root,
 } from "type-graphql";
 import { AppCtx } from "../../typings";
-import {
-  NewPasswordInputDto,
-  UserInputDto,
-  UserResponseDto
-} from "./dto";
-import { User } from "./user.entity";
+import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from "./dto";
 import { UsersService } from "./service";
+import { User } from "./user.entity";
 
 @Resolver(User)
 export class UserController {
@@ -25,10 +22,10 @@ export class UserController {
 
   @Mutation(() => UserResponseDto)
   async createUser(
-    @Arg("options") options: UserInputDto,
+    @Arg("dto") dto: CreateUserDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<UserResponseDto> {
-    return this.usersService.create(ctx, options);
+    return this.usersService.create(ctx, dto);
   }
 
   @Mutation(() => UserResponseDto)
@@ -41,9 +38,9 @@ export class UserController {
 
   @Mutation(() => UserResponseDto)
   async updatePassword(
-    @Arg("options") options: NewPasswordInputDto,
+    @Arg("dto") dto: UpdatePasswordDto,
     @Ctx() ctx: AppCtx
   ): Promise<UserResponseDto> {
-    return this.usersService.updatePassword(ctx, options);
+    return this.usersService.updatePassword(ctx, dto);
   }
 }

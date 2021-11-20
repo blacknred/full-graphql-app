@@ -7,7 +7,19 @@
 //   ),
 // });
 
+import { cleanEnv, num, port, str } from "envalid";
 import * as path from "path";
+
+export function validateEnv() {
+  cleanEnv(process.env, {
+    SECRET: str(),
+    DB_URL: str(),
+    REDIS_URL: str(),
+    PORT: port(),
+    CLIENT_HOSTS: str(),
+    ONLINE_TIMESPAN: num(),
+  });
+}
 
 const config = {} as __Config__;
 
@@ -40,7 +52,7 @@ config.session = {
 config.db = {
   entities: [path.join(__dirname, "/app/*/*.entity.{ts,js}")],
   migrations: [path.join(__dirname, "../", "migration/*.ts")],
-  type: "postgres", 
+  type: "postgres",
   url: process.env.DB_URL,
   logging: !config.__prod__,
   synchronize: !config.__prod__,

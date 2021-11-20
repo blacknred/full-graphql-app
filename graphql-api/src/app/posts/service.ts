@@ -1,9 +1,7 @@
 import { AppCtx } from "../../typings";
-import inputValidation from "../../utils/inputValidation";
-import { FieldErrorDto, PaginatedInputDto } from "../__shared__/dto/response";
-import { PostInputDto } from "./dto";
+import { PaginatedInputDto } from "../__shared__/dto/response";
+import { CreatePostDto, UpdatePostDto } from "./dto";
 import { Post } from "./post.entity";
-import { Vote } from "./vote.entity";
 
 export class PostsService {
   async findAll(ctx: AppCtx["ctx"], params: PaginatedInputDto) {
@@ -62,21 +60,13 @@ export class PostsService {
     return post;
   }
 
-  async create(ctx: AppCtx["ctx"], options: PostInputDto) {
-    const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
-    if (errors) return { errors };
-
-    const post = await Post.create({
-      ...options,
-      creatorId: ctx.session!.userId,
-    }).save();
+  async create(ctx: AppCtx["ctx"], dto: CreatePostDto) {
+    const creatorId = ctx.session!.userId;
+    const post = await Post.create({ ...dto, creatorId }).save();
     return { data: post };
   }
 
-  async update(ctx: AppCtx["ctx"], id: number, options: PostInputDto) {
-    const errors = inputValidation<PostInputDto, FieldErrorDto>(options);
-    if (errors) return { errors };
-
+  async update(ctx: AppCtx["ctx"], { id, ...dto }: UpdatePostDto) {
     const post = await Post.findOne(id);
     if (!post) {
       const error = {
@@ -94,7 +84,7 @@ export class PostsService {
       return { errors: [error] };
     }
 
-    const data = { ...post, ...options };
+    const data = { ...post, ...dto };
     Post.update({ id, creatorId: ctx.session!.userId }, data);
     return { data };
   }
@@ -119,31 +109,5 @@ export class PostsService {
 
     await Post.delete({ id, creatorId: +ctx.session!.userId });
     return {};
-  }
-
-  async createVote(ctx: AppCtx["ctx"], postId: number, value: 1 | -1) {
-    const { userId } = ctx.session!;
-    const val = value < 0 ? -1 : 1;
-
-    const post = await Post.findOne(postId);
-    if (!post) {
-      const error = {
-        field: "id",
-        message: "Post not found",
-      };
-      return { errors: [error] };
-    }
-
-    await Vote.createQueryBuilder("v")
-      .insert()
-      .values({ postId, userId, value: val })
-      .onConflict(`("userId", "postId") DO UPDATE SET "value" = :value`)
-      .setParameter("value", value)
-      .execute();
-
-    return Vote.createQueryBuilder("v")
-      .select("SUM(v.value)", "data")
-      .where({ postId })
-      .getRawOne();
   }
 }
