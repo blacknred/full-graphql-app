@@ -12,7 +12,7 @@ import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
 import checkCors from "./middleware/checkCors";
 import schemaBuilder from "./middleware/schemaBuilder";
-import { Redis, RedisClient, RedisSession } from "./redis";
+import { Redis, RedisClient, RedisSession } from "./utils/redis";
 
 /** set all up */
 

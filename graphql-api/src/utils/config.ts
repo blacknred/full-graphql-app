@@ -1,6 +1,4 @@
 // import * as dotenv from "dotenv";
-import * as path from "path";
-
 // dotenv.config({
 //   path: path.join(
 //     __dirname,
@@ -8,6 +6,8 @@ import * as path from "path";
 //     `.env.${process.env.NODE_ENV || "development"}`
 //   ),
 // });
+
+import * as path from "path";
 
 const config = {} as __Config__;
 

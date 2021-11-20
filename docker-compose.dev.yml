@@ -31,17 +31,17 @@ services:
     healthcheck:
       test: exit 0
 
-  api:
-    container_name: api
-    hostname: api
+  graphql-api:
+    container_name: graphql-api
+    hostname: graphql-api
     command: yarn dev
     build:
-      context: ./api
+      context: ./graphql-api
       target: development
     env_file:
       - ".env.dev"
     volumes:
-      - "./api:/usr/src/app"
+      - "./graphql-api:/usr/src/app"
       - "/usr/src/app/node_modules"
     environment:
       - NODE_ENV=development
