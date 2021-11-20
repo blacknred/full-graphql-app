@@ -1,5 +1,5 @@
 import { Field, InputType, ObjectType } from "type-graphql";
-import { PaginatedResponseDto, ValidatedResponseDto } from "../../utils/sharedDto";
+import { PaginatedResponseDto, ValidatedResponseDto } from "../__shared__/dto/response";
 import { Post } from "./post.entity";
 
 @InputType()

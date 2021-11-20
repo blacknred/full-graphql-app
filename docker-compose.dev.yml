@@ -1,19 +1,17 @@
 version: "3.7"
 
 services:
-  cache:
-    container_name: cache
-    build: ./cache
+  redis:
+    container_name: redis
+    build: ./redis
     env_file: ./.env.dev
     volumes:
-      - "./cache/db-data:/data"
+      - "./redis/db-data:/data"
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD:-test}
     restart: always
     ports:
       - "6379:6379"
-    networks:
-      - backend
     healthcheck:
       test: exit 0
 
@@ -30,8 +28,6 @@ services:
     restart: always
     ports:
       - "5432:5432"
-    networks:
-      - backend
     healthcheck:
       test: exit 0
 
@@ -50,13 +46,10 @@ services:
     environment:
       - NODE_ENV=development
       - DB_URL=postgres://${POSTGRES_USER:-test}:${POSTGRES_PASSWORD:-test}@db:5432/${POSTGRES_DB:-test}
-      - REDIS_URL=redis://:${REDIS_PASSWORD:-test}@cache:6379/0
+      - REDIS_URL=redis://:${REDIS_PASSWORD:-test}@redis:6379/0
     depends_on:
       - db
-      - cache
-    links:
-      - db
-      - cache
+      - redis
     restart: always
     ports:
       - "8080:3000"

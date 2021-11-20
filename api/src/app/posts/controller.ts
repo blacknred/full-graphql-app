@@ -10,7 +10,7 @@ import {
 } from "type-graphql";
 import checkAuth from "../../middleware/checkAuth";
 import { AppCtx } from "../../typings";
-import { PaginatedInputDto } from "../../utils/sharedDto";
+import { PaginatedInputDto } from "../__shared__/dto/response";
 import {
   PostInputDto,
   PostResponseDto,

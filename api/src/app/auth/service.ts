@@ -1,7 +1,7 @@
 import crypt from "bcryptjs";
 import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
-import { FieldErrorDto } from "../../utils/sharedDto";
+import { FieldErrorDto } from "../__shared__/dto/response";
 import { AuthInputDto } from "./dto";
 import { User } from "../users/user.entity";
 

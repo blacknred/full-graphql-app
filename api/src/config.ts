@@ -43,7 +43,7 @@ config.db = {
   type: "postgres", 
   url: process.env.DB_URL,
   logging: !config.__prod__,
-  synchronize: true,
+  synchronize: !config.__prod__,
   useUTC: true,
   // replicas: []
 };

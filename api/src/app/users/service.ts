@@ -3,7 +3,7 @@ import { v4 } from "uuid";
 import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
 import emails from "../../utils/mailTemplates";
-import { FieldErrorDto } from "../../utils/sharedDto";
+import { FieldErrorDto } from "../__shared__/dto/response";
 import { NewPasswordInputDto, UserInputDto } from "./dto";
 import { User } from "./user.entity";
 

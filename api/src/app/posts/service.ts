@@ -1,6 +1,6 @@
 import { AppCtx } from "../../typings";
 import inputValidation from "../../utils/inputValidation";
-import { FieldErrorDto, PaginatedInputDto } from "../../utils/sharedDto";
+import { FieldErrorDto, PaginatedInputDto } from "../__shared__/dto/response";
 import { PostInputDto } from "./dto";
 import { Post } from "./post.entity";
 import { Vote } from "./vote.entity";
