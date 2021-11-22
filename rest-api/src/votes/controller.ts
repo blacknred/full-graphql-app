@@ -4,7 +4,7 @@ import { AppCtx } from "../../typings";
 import { VoteResponseDto } from "./dto";
 import { CreateVoteDto } from "./dto";
 import { VotesService } from "./service";
-import { Vote } from "./vote.entity";
+import { Vote } from "./entity";
 
 @Resolver(Vote)
 export class PostController {

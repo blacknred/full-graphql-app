@@ -1,47 +1,32 @@
-
 import Router from "@koa/router";
-import { AppCtx } from "../../typings";
-import Controller from "../../__shared__/interfaces/controller.interface";
+import { Context } from "koa";
+import useAuth from "src/__shared__/middleware/auth.middleware";
+import useValidation from "src/__shared__/middleware/validation.middleware";
+import { IController } from "../__shared__/interfaces/controller.interface";
 import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from "./dto";
 import { UsersService } from "./service";
-import { User } from "./user.entity";
 
-export class UsersController implements Controller {
-  public path = '/users';
-  public router = new Router();
-  private usersService = new UsersService();
+export class UsersController implements IController {
+  path = "/users";
 
-  constructor() {
-    this.router.get(`${this.path}/:id`, authMiddleware, this.getUserById);
-    this.router.get(`${this.path}/:id/posts`, authMiddleware, this.getAllPostsOfUser);
+  constructor(router: Router, private usersService: UsersService) {
+    router.post(`${this.path}`, useValidation(CreateUserDto), this.createUser);
+    router.post(`${this.path}/password`, useAuth, this.changePassword);
+    router.patch(`${this.path}/password`, useAuth, this.updatePassword);
   }
 
-  @FieldResolver(() => String)
-  email(@Root() user: User, @Ctx() { ctx }: AppCtx) {
-    return ctx.session!.userId === user.id ? user.email : "";
-  }
-
-  @Mutation(() => UserResponseDto)
-  async createUser(
-    @Arg("dto") dto: CreateUserDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<UserResponseDto> {
+  async createUser(ctx: Context): Promise<UserResponseDto> {
+    const dto = ctx.body as CreateUserDto;
     return this.usersService.create(ctx, dto);
   }
 
-  @Mutation(() => UserResponseDto)
-  async changePassword(
-    @Arg("email") email: string,
-    @Ctx() ctx: AppCtx
-  ): Promise<UserResponseDto> {
+  async changePassword(ctx: Context): Promise<UserResponseDto> {
+    const email = ctx.body as string;
     return this.usersService.changePassword(ctx, email);
   }
 
-  @Mutation(() => UserResponseDto)
-  async updatePassword(
-    @Arg("dto") dto: UpdatePasswordDto,
-    @Ctx() ctx: AppCtx
-  ): Promise<UserResponseDto> {
+  async updatePassword(ctx: Context): Promise<UserResponseDto> {
+    const dto = ctx.body as UpdatePasswordDto;
     return this.usersService.updatePassword(ctx, dto);
   }
 }

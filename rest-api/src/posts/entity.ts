@@ -7,8 +7,8 @@ import {
   OneToMany, PrimaryGeneratedColumn,
   UpdateDateColumn
 } from "typeorm";
-import { User } from "../users/user.entity";
-import { Vote } from "../votes/vote.entity";
+import { User } from "../users/entity";
+import { Vote } from "../votes/entity";
 
 @Entity()
 @ObjectType()

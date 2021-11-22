@@ -3,7 +3,7 @@ import { HealthResponseDto } from "./dto";
 import { HealthService } from "./service";
 
 @Resolver()
-export class HeathController {
+export class HealthController {
   private heathService = new HealthService();
 
   @Query(() => HealthResponseDto)

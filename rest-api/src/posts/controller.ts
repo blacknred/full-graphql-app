@@ -17,7 +17,7 @@ import {
   PostsResponseDto,
   UpdatePostDto,
 } from "./dto";
-import { Post } from "./post.entity";
+import { Post } from "./entity";
 import { PostsService } from "./service";
 
 @Resolver(Post)

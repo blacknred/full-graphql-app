@@ -9,7 +9,9 @@ import * as nodemailer from "nodemailer";
 import { Transporter } from "nodemailer";
 import { ServerInfo } from "redis";
 import "reflect-metadata";
+import { NonEmptyArray } from "type-graphql";
 import { Connection, createConnection } from "typeorm";
+import { Constructor } from "./__shared__/interfaces/constructor.interface";
 import checkCors from "./__shared__/middleware/cors.middleware";
 import schemaBuilder from "./__shared__/middleware/graphql.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
@@ -24,7 +26,7 @@ export default class App {
   private redis?: RedisClient;
   private smtp?: Transporter;
 
-  constructor(conf: __Config__) {
+  constructor(conf: __Config__, modules: NonEmptyArray<Constructor>) {
     /** logger */
     log4js.configure(conf.logger);
     this.logger = log4js.getLogger("server");
@@ -41,7 +43,7 @@ export default class App {
     process.on("SIGINT", this.stop.bind(this));
 
     /** run */
-    this.start(conf);
+    this.start(conf, modules);
   }
 
   /** server health status */
@@ -81,7 +83,7 @@ export default class App {
 
   /** run */
 
-  private async start(conf: __Config__) {
+  private async start(conf: __Config__, modules: NonEmptyArray<Constructor>) {
     try {
       /** redis instance */
       this.redis = new Redis(conf.redis);
@@ -101,7 +103,6 @@ export default class App {
         conf.email.url = `smtp://${user}:${pass}@${smtp.host}:${smtp.port}`;
         this.logger.warn("new test smtp url is " + conf.email.url);
       }
-
       this.smtp = nodemailer.createTransport(conf.email);
       if (!(await this.smtp.verify())) {
         throw new Error("Smtp is not connected");
@@ -119,7 +120,12 @@ export default class App {
       app.use(session(conf.session, app));
       app.use(bodyParser());
       app.use(
-        schemaBuilder(conf, this.redis, this.smtp.sendMail.bind(this.smtp))
+        schemaBuilder(
+          conf,
+          modules,
+          this.redis,
+          this.smtp.sendMail.bind(this.smtp)
+        )
       );
       app.use(helmet());
 

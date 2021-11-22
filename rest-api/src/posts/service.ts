@@ -1,7 +1,7 @@
 import { AppCtx } from "../../typings";
 import { PaginatedInputDto } from "../../__shared__/dto/response";
 import { CreatePostDto, UpdatePostDto } from "./dto";
-import { Post } from "./post.entity";
+import { Post } from "./entity";
 
 export class PostsService {
   async findAll(ctx: AppCtx["ctx"], params: PaginatedInputDto) {

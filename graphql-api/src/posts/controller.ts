@@ -9,7 +9,7 @@ import {
   UseMiddleware,
 } from "type-graphql";
 import checkAuth from "../__shared__/middleware/auth.middleware";
-import { AppCtx } from "../typings";
+import { AppCtx } from "../__shared__/interfaces/context.interface";
 import { PaginatedInputDto } from "../__shared__/dto/response";
 import {
   CreatePostDto,
@@ -17,7 +17,7 @@ import {
   PostsResponseDto,
   UpdatePostDto,
 } from "./dto";
-import { Post } from "./post.entity";
+import { Post } from "./entity";
 import { PostsService } from "./service";
 
 @Resolver(Post)

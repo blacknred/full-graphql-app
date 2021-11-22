@@ -7,9 +7,9 @@ import {
   Resolver,
   Root
 } from "type-graphql";
-import { AppCtx } from "../typings";
+import { AppCtx } from "../__shared__/interfaces/context.interface";
 import { UserResponseDto } from "../users/dto";
-import { User } from "../users/user.entity";
+import { User } from "../users/entity";
 import { CreateAuthDto } from "./dto";
 import { AuthService } from "./service";
 

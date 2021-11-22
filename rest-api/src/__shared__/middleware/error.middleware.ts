@@ -1,16 +1,16 @@
-import { NextFunction, Request, Response } from 'express';
-import { Context, Next } from 'koa';
-import HttpException from '../exceptions/HttpException';
+import { Context, Next } from "koa";
 
-function errorMiddleware(ctx: Context, next: Next) {
-  const status = error.status || 500;
-  const message = error.message || 'Something went wrong';
-  response
-    .status(status)
-    .send({
-      message,
+
+export default async (ctx: Context, next: Next) => {
+  try {
+    await next();
+  } catch (err) {
+    const status = err.status || 500;
+    ctx.status = status;
+    ctx.body = {
       status,
-    });
-}
-
-export default errorMiddleware;
+      message: err.message || "Something went wrong";
+    }
+    // ctx.app.emit('error', err, ctx);
+  }
+};

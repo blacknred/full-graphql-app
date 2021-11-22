@@ -1,10 +1,10 @@
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import checkAuth from "../__shared__/middleware/auth.middleware";
-import { AppCtx } from "../typings";
+import { AppCtx } from "../__shared__/interfaces/context.interface";
 import { VoteResponseDto } from "./dto";
 import { CreateVoteDto } from "./dto";
 import { VotesService } from "./service";
-import { Vote } from "./vote.entity";
+import { Vote } from "./entity";
 
 @Resolver(Vote)
 export class VotesController {

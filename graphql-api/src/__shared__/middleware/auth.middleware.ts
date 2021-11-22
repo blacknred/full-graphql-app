@@ -1,5 +1,5 @@
-import { AppCtx } from "src/typings";
 import { MiddlewareFn } from "type-graphql";
+import { AppCtx } from "../interfaces/context.interface";
 
 /** check auth */
 

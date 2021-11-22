@@ -1,0 +1,1 @@
+export { UsersController as UsersModule } from "./controller";

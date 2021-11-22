@@ -4,7 +4,7 @@ import {
   PaginatedResponseDto,
   ValidatedResponseDto,
 } from "../../__shared__/dto/response";
-import { Post } from "./post.entity";
+import { Post } from "./entity";
 
 @InputType()
 export class CreatePostDto {

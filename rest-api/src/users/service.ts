@@ -1,9 +1,9 @@
 import crypt from "bcryptjs";
 import { v4 } from "uuid";
-import { AppCtx } from "../../typings";
-import emails from "../../__shared__/utils/mailTemplates";
+import { AppCtx } from "../typings";
+import emails from "../__shared__/utils/mailTemplates";
 import { CreateUserDto, UpdatePasswordDto } from "./dto";
-import { User } from "./user.entity";
+import { User } from "./entity";
 
 export class UsersService {
   async create(ctx: AppCtx["ctx"], dto: CreateUserDto) {

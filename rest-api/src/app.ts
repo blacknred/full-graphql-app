@@ -1,6 +1,7 @@
 import * as http from "http";
 import Koa from "koa";
 import bodyParser from "koa-body";
+import Router from "@koa/router";
 import cors from "koa-cors";
 import helmet from "koa-helmet";
 import session from "koa-session";
@@ -10,7 +11,9 @@ import { Transporter } from "nodemailer";
 import { ServerInfo } from "redis";
 import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
-import checkCors from "./__shared__/middleware/cors.middleware";
+import { IController } from "./__shared__/interfaces/controller.interface";
+import useCors from "./__shared__/middleware/cors.middleware";
+import useErrors from "./__shared__/middleware/error.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
 
 /** set all up */
@@ -23,7 +26,7 @@ export default class App {
   private redis?: RedisClient;
   private smtp?: Transporter;
 
-  constructor(conf: __Config__) {
+  constructor(conf: __Config__, controllers: IController[]) {
     /** logger */
     log4js.configure(conf.logger);
     this.logger = log4js.getLogger("server");
@@ -40,7 +43,7 @@ export default class App {
     process.on("SIGINT", this.stop.bind(this));
 
     /** run */
-    this.start(conf);
+    this.start(conf, controllers);
   }
 
   /** server health status */
@@ -80,7 +83,7 @@ export default class App {
 
   /** run */
 
-  private async start(conf: __Config__) {
+  private async start(conf: __Config__, controllers: IController[]) {
     try {
       /** redis instance */
       this.redis = new Redis(conf.redis);
@@ -100,7 +103,6 @@ export default class App {
         conf.email.url = `smtp://${user}:${pass}@${smtp.host}:${smtp.port}`;
         this.logger.warn("new test smtp url is " + conf.email.url);
       }
-
       this.smtp = nodemailer.createTransport(conf.email);
       if (!(await this.smtp.verify())) {
         throw new Error("Smtp is not connected");
@@ -113,21 +115,26 @@ export default class App {
 
       /** application */
       const app = new Koa();
-      app.use(cors(checkCors(conf.__clients__)));
+      app.use(cors(useCors(conf.__clients__)));
       conf.session.store = new RedisSession(this.redis);
       app.use(session(conf.session, app));
       app.use(bodyParser());
       app.use(helmet());
-      // app.use(
-      //   schemaBuilder(conf, this.redis, this.smtp.sendMail.bind(this.smtp))
-      // );
+      app.use(useErrors);
+
+      /** routes */
+      const router = new Router();
+      controllers.forEach((Controller) => {
+        new Controller(router);
+      });
+      app.use(router.routes());
 
       /** listen */
       this.ref = await app.listen(conf.__port__);
       this.logger.info(`🚀 at http://127.0.0.1:${conf.__port__}`);
     } catch (err) {
       console.log(err);
-      
+
       this.stop(err);
     }
   }

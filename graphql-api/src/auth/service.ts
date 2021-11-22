@@ -1,6 +1,6 @@
 import crypt from "bcryptjs";
-import { AppCtx } from "../typings";
-import { User } from "../users/user.entity";
+import { AppCtx } from "../__shared__/interfaces/context.interface";
+import { User } from "../users/entity";
 import { CreateAuthDto } from "./dto";
 
 export class AuthService {

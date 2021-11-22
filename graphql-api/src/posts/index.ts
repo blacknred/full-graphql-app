@@ -1,0 +1,1 @@
+export { PostsController as PostsModule } from './controller';

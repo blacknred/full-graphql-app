@@ -6,10 +6,10 @@ import {
   Resolver,
   Root,
 } from "type-graphql";
-import { AppCtx } from "../typings";
+import { AppCtx } from "../__shared__/interfaces/context.interface";
 import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from "./dto";
 import { UsersService } from "./service";
-import { User } from "./user.entity";
+import { User } from "./entity";
 
 @Resolver(User)
 export class UsersController {

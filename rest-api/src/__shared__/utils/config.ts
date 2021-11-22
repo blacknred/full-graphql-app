@@ -43,7 +43,7 @@ config.session = {
 };
 
 config.db = {
-  entities: [path.join(__dirname, "/app/*/*.entity.{ts,js}")],
+  entities: [path.join(__dirname, "/app/*/entity.{ts,js}")],
   migrations: [path.join(__dirname, "../", "migration/*.ts")],
   type: "postgres",
   url: process.env.DB_URL,

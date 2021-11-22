@@ -1,20 +1,25 @@
-import { plainToClass } from 'class-transformer';
-import { validate, ValidationError } from 'class-validator';
-import { RequestHandler } from 'express';
-import HttpException from '../exceptions/HttpException';
+import { plainToClass } from "class-transformer";
+import { validate, ValidationError } from "class-validator";
+import { Context, Next } from "koa";
+import HttpException from "../exceptions/HttpException";
 
-function validationMiddleware<T>(type: any, skipMissingProperties = false): RequestHandler {
-  return (req, res, next) => {
-    validate(plainToClass(type, req.body), { skipMissingProperties })
-      .then((errors: ValidationError[]) => {
-        if (errors.length > 0) {
-          const message = errors.map((error: ValidationError) => Object.values(error.constraints)).join(', ');
-          next(new HttpException(400, message));
-        } else {
-          next();
+export default (type: any, skipMissingProperties = false) => {
+  return async ({ body }: Context, next: Next) => {
+    const errors: ValidationError[] = await validate(plainToClass(type, body), {
+      skipMissingProperties,
+    });
+
+    if (errors.length > 0) {
+      const message = errors.reduce((str, error) => {
+        if (error.constraints) {
+          str += `, ${Object.values(error.constraints)}`;
         }
-      });
-  };
-}
+        return str;
+      }, "");
 
-export default validationMiddleware;
+      throw new HttpException(400, message);
+    }
+
+    await next();
+  };
+};

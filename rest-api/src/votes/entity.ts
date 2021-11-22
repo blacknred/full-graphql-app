@@ -5,8 +5,8 @@ import {
   Entity,
   ManyToOne, PrimaryColumn
 } from "typeorm";
-import { User } from "../users/user.entity";
-import { Post } from "../posts/post.entity";
+import { User } from "../users/entity";
+import { Post } from "../posts/entity";
 
 @Entity()
 @ObjectType()

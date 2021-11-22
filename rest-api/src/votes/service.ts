@@ -1,6 +1,6 @@
 import { AppCtx } from "../../typings";
-import { Post } from "../posts/post.entity";
-import { Vote } from "./vote.entity";
+import { Post } from "../posts/entity";
+import { Vote } from "./entity";
 import { CreateVoteDto } from "./dto";
 
 export class VotesService {

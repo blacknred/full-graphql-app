@@ -1,8 +1,6 @@
 import Router from "@koa/router";
 
-interface Controller {
+export interface IController {
   path: string;
-  router: Router;
+  new (router: Router): void;
 }
-
-export default Controller;

@@ -1,7 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Post } from "../posts/post.entity";
-import { Vote } from "../votes/vote.entity";
+import { Post } from "../posts/entity";
+import { Vote } from "../votes/entity";
 
 @ObjectType()
 @Entity()

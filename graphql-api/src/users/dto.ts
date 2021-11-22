@@ -1,7 +1,7 @@
 import { IsEmail, IsNotEmpty, IsString, MinLength } from "class-validator";
 import { Field, InputType, ObjectType } from "type-graphql";
 import { ValidatedResponseDto } from "../__shared__/dto/response";
-import { User } from "./user.entity";
+import { User } from "./entity";
 
 @InputType()
 export class CreateUserDto {
