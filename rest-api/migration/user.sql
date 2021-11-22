@@ -1,0 +1,10 @@
+insert into "user" (username, email, password, "createdAt") values ('cpollington0', 'dcolloby0@google.fr', '9dJuo1y', '2021-05-23T07:04:09Z');
+insert into "user" (username, email, password, "createdAt") values ('sbenditt1', 'lbust1@theatlantic.com', 'wH1oKKh', '2021-01-09T23:06:56Z');
+insert into "user" (username, email, password, "createdAt") values ('ggasking2', 'rdignam2@merriam-webster.com', 'sGrPXu28H', '2020-11-10T22:55:17Z');
+insert into "user" (username, email, password, "createdAt") values ('clilleman3', 'fdoerr3@quantcast.com', 'PWf4U6n', '2021-03-19T16:43:09Z');
+insert into "user" (username, email, password, "createdAt") values ('qnassi4', 'tdacey4@washingtonpost.com', 'VJZlGwHp', '2020-11-18T23:50:02Z');
+insert into "user" (username, email, password, "createdAt") values ('vhiscoe5', 'cpindred5@facebook.com', 'NvpbGhqMm', '2021-05-31T14:17:32Z');
+insert into "user" (username, email, password, "createdAt") values ('lporcher6', 'cjorn6@disqus.com', 'Q44PAH2w', '2021-06-28T19:10:28Z');
+insert into "user" (username, email, password, "createdAt") values ('cthurstance7', 'pmattys7@fema.gov', 'odeFDs2pBJ', '2020-10-10T01:26:09Z');
+insert into "user" (username, email, password, "createdAt") values ('ddaniel8', 'bkrol8@domainmarket.com', '8ZRT8h47nbz4', '2021-05-21T00:10:20Z');
+insert into "user" (username, email, password, "createdAt") values ('bfranciskiewicz9', 'ohartigan9@freewebs.com', 'g5rhKpcC3', '2021-06-01T07:46:07Z');
