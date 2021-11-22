@@ -14,3 +14,5 @@ export class ValidatedResponseDto<T> {
   errors?: FieldErrorDto[];
   data?: T;
 }
+
+export class EmptyResponseDto extends ValidatedResponseDto<null> {}

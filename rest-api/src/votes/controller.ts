@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { Context } from "koa";
+import { AppCtx } from "src/__shared__/interfaces/context.interface";
 import useAuth from "src/__shared__/middleware/auth.middleware";
 import useValidation from "src/__shared__/middleware/validation.middleware";
 import { CreateVoteDto, VoteResponseDto } from "./dto";
@@ -13,8 +13,8 @@ export class VotesController {
     router.post(this.path, useAuth, useValidation(CreateVoteDto), this.create);
   }
 
-  async create(ctx: Context): Promise<VoteResponseDto> {
-    const dto = ctx.body as CreateVoteDto;
+  async create(ctx: AppCtx): Promise<VoteResponseDto> {
+    const dto = ctx.request.body as CreateVoteDto;
     return this.votesService.create(ctx, dto);
   }
 }

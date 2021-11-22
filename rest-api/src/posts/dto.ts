@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsString } from "class-validator";
 import {
   PaginatedResponseDto,
   ValidatedResponseDto,
@@ -13,12 +13,6 @@ export class CreatePostDto {
   @IsString()
   @IsNotEmpty()
   text!: string;
-}
-
-export class UpdatePostDto extends CreatePostDto {
-  @IsNumber()
-  @IsNotEmpty()
-  id!: number;
 }
 
 export class PostResponseDto extends ValidatedResponseDto<Post> {}

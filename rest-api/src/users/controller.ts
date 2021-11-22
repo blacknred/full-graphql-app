@@ -1,5 +1,5 @@
 import Router from "@koa/router";
-import { Context } from "koa";
+import { AppCtx } from "src/__shared__/interfaces/context.interface";
 import useAuth from "src/__shared__/middleware/auth.middleware";
 import useValidation from "src/__shared__/middleware/validation.middleware";
 import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from "./dto";
@@ -15,18 +15,18 @@ export class UsersController {
     router.patch(`${this.path}/password`, useAuth, this.updatePassword);
   }
 
-  async create(ctx: Context): Promise<UserResponseDto> {
-    const dto = ctx.body as CreateUserDto;
+  async create(ctx: AppCtx): Promise<UserResponseDto> {
+    const dto = ctx.request.body as CreateUserDto;
     return this.usersService.create(ctx, dto);
   }
 
-  async changePassword(ctx: Context): Promise<UserResponseDto> {
-    const email = ctx.body as string;
+  async changePassword(ctx: AppCtx): Promise<UserResponseDto> {
+    const email = ctx.request.body as string;
     return this.usersService.changePassword(ctx, email);
   }
 
-  async updatePassword(ctx: Context): Promise<UserResponseDto> {
-    const dto = ctx.body as UpdatePasswordDto;
+  async updatePassword(ctx: AppCtx): Promise<UserResponseDto> {
+    const dto = ctx.request.body as UpdatePasswordDto;
     return this.usersService.updatePassword(ctx, dto);
   }
 }

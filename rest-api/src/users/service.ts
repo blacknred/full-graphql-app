@@ -6,7 +6,7 @@ import { CreateUserDto, UpdatePasswordDto } from "./dto";
 import { User } from "./entity";
 
 export class UsersService {
-  async create(ctx: AppCtx["ctx"], dto: CreateUserDto) {
+  async create(ctx: AppCtx, dto: CreateUserDto) {
     if (await User.findOne({ username: dto.username })) {
       const error = {
         field: "username",
@@ -21,7 +21,7 @@ export class UsersService {
     return { data: user };
   }
 
-  async changePassword({ kv, smtp, ctx }: AppCtx, email: string) {
+  async changePassword({ kv, smtp, request }: AppCtx, email: string) {
     const user = await User.findOne({ where: { email } });
     if (!user) {
       const error = {
@@ -33,7 +33,7 @@ export class UsersService {
 
     const token = v4();
     await kv.set(`CHANGE-PASSWORD:${token}`, `${user.id}`, "ex", 60 * 60);
-    const html = emails.forgotPassword(ctx.request.header.origin!, token);
+    const html = emails.forgotPassword(request.header.origin!, token);
     await smtp({ to: email, subject: "Change password", html });
     return {};
   }

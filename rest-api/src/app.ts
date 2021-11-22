@@ -12,6 +12,7 @@ import { ServerInfo } from "redis";
 import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
 import useCors from "./__shared__/middleware/cors.middleware";
+import useContext from "./__shared__/middleware/context.middleware";
 import useErrors from "./__shared__/middleware/error.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
 import { IModule } from "./__shared__/interfaces/module.interface";
@@ -119,9 +120,9 @@ export default class App {
       conf.session.store = new RedisSession(this.redis);
       app.use(session(conf.session, app));
       app.use(bodyParser());
+      app.use(useContext(conf, this.redis, this.smtp.sendMail.bind(this.smtp)));
       app.use(helmet());
       app.use(useErrors);
-      //
 
       /** routes */
       const router = new Router();

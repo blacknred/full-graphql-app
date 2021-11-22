@@ -4,7 +4,7 @@ import { CreateVoteDto } from "./dto";
 import { AppCtx } from "src/__shared__/interfaces/context.interface";
 
 export class VotesService {
-  async create(ctx: AppCtx["ctx"], { value, postId }: CreateVoteDto) {
+  async create(ctx: AppCtx, { value, postId }: CreateVoteDto) {
     const { userId } = ctx.session!;
     const val = value < 0 ? -1 : 1;
 

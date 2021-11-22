@@ -1,23 +1,33 @@
 import { plainToClass } from "class-transformer";
 import { validate, ValidationError } from "class-validator";
 import { Context, Next } from "koa";
-import HttpException from "../exceptions/HttpException";
+import { FieldErrorDto } from "../dto/response";
+
+/** validation middleware */
 
 export default (type: any, skipMissingProperties = false) => {
-  return async ({ body }: Context, next: Next) => {
-    const errors: ValidationError[] = await validate(plainToClass(type, body), {
-      skipMissingProperties,
-    });
+  return async (ctx: Context, next: Next) => {
+    const errors: ValidationError[] = await validate(
+      plainToClass(type, ctx.body),
+      {
+        skipMissingProperties,
+      }
+    );
 
     if (errors.length > 0) {
-      const message = errors.reduce((str, error) => {
+      const messages = errors.reduce((all, error) => {
         if (error.constraints) {
-          str += `, ${Object.values(error.constraints)}`;
+          Object.keys(error.constraints).forEach((field) => {
+            all.push({
+              field,
+              message: error.constraints![field]
+            });
+          });
         }
-        return str;
-      }, "");
+        return all;
+      }, [] as FieldErrorDto[]);
 
-      throw new HttpException(400, message);
+      ctx.throw(400, messages);
     }
 
     await next();

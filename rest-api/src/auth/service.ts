@@ -4,7 +4,7 @@ import { AppCtx } from "src/__shared__/interfaces/context.interface";
 import { CreateAuthDto } from "./dto";
 
 export class AuthService {
-  async create(ctx: AppCtx["ctx"], dto: CreateAuthDto) {
+  async create(ctx: AppCtx, dto: CreateAuthDto) {
     const user = await User.findOne({
       where: [
         { username: dto.usernameOrEmail },
@@ -20,10 +20,7 @@ export class AuthService {
       return { errors: [error] };
     }
 
-    const valid = await crypt.compare(
-      dto.password || "",
-      user.password || ""
-    );
+    const valid = await crypt.compare(dto.password || "", user.password || "");
 
     if (!valid) {
       const error = {
@@ -37,13 +34,17 @@ export class AuthService {
     return { data: user };
   }
 
-  async findOne(ctx: AppCtx["ctx"]) {
-    if (!ctx.session!.userId) return undefined;
-    return User.findOne(+ctx.session!.userId);
+  async findOne(ctx: AppCtx) {
+    if (!ctx.session!.userId) {
+      return {};
+    }
+
+    const user = await User.findOne(+ctx.session!.userId);
+    return { data: user };
   }
 
-  remove(ctx: AppCtx["ctx"]) {
+  remove(ctx: AppCtx) {
     ctx.session = null;
-    return true;
+    return { data: null };
   }
 }

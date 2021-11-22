@@ -1,11 +1,11 @@
 
 import { PaginationDto } from "src/__shared__/dto/request";
 import { AppCtx } from "src/__shared__/interfaces/context.interface";
-import { CreatePostDto, UpdatePostDto } from "./dto";
+import { CreatePostDto } from "./dto";
 import { Post } from "./entity";
 
 export class PostsService {
-  async findAll(ctx: AppCtx["ctx"], params: PaginationDto) {
+  async findAll(ctx: AppCtx, params: PaginationDto) {
     const lim = Math.min(50, params.limit);
     const extraLim = lim + 1;
     const cur = params.cursor ? new Date(+params.cursor) : new Date();
@@ -50,7 +50,7 @@ export class PostsService {
     };
   }
 
-  async findOne(ctx: AppCtx["ctx"], id: number) {
+  async findOne(ctx: AppCtx, id: number) {
     const post = await Post.createQueryBuilder("p")
       .leftJoinAndSelect("p.creator", "p_creator")
       .leftJoinAndMapMany("p.votes", "vote", "v", "v.postId = p.id")
@@ -58,16 +58,16 @@ export class PostsService {
       .getOne();
 
     post?.setComputed(ctx.session?.userId);
-    return post;
+    return { data: post };
   }
 
-  async create(ctx: AppCtx["ctx"], dto: CreatePostDto) {
+  async create(ctx: AppCtx, dto: CreatePostDto) {
     const creatorId = ctx.session!.userId;
     const post = await Post.create({ ...dto, creatorId }).save();
     return { data: post };
   }
 
-  async update(ctx: AppCtx["ctx"], { id, ...dto }: UpdatePostDto) {
+  async update(ctx: AppCtx, id: number, dto: CreatePostDto) {
     const post = await Post.findOne(id);
     if (!post) {
       const error = {
@@ -85,12 +85,12 @@ export class PostsService {
       return { errors: [error] };
     }
 
-    const data = { ...post, ...dto };
+    const data = { ...post, ...dto } as Post;
     Post.update({ id, creatorId: ctx.session!.userId }, data);
     return { data };
   }
 
-  async remove(ctx: AppCtx["ctx"], id: number) {
+  async remove(ctx: AppCtx, id: number) {
     const post = await Post.findOne(id);
     if (!post) {
       const error = {
@@ -109,6 +109,6 @@ export class PostsService {
     }
 
     await Post.delete({ id, creatorId: +ctx.session!.userId });
-    return {};
+    return { data: null };
   }
 }

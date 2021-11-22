@@ -13,7 +13,7 @@ import { NonEmptyArray } from "type-graphql";
 import { Connection, createConnection } from "typeorm";
 import { IModule } from "./__shared__/interfaces/module.interface";
 import checkCors from "./__shared__/middleware/cors.middleware";
-import schemaBuilder from "./__shared__/middleware/graphql.middleware";
+import useGraphql from "./__shared__/middleware/graphql.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
 
 /** set all up */
@@ -120,7 +120,7 @@ export default class App {
       app.use(session(conf.session, app));
       app.use(bodyParser());
       app.use(
-        schemaBuilder(
+        useGraphql(
           conf,
           modules,
           this.redis,

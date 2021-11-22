@@ -1,8 +1,8 @@
 
 import Router from '@koa/router';
-import { Context } from "koa";
 import { UserResponseDto } from 'src/users/dto';
-import { User } from 'src/users/entity';
+import { EmptyResponseDto } from 'src/__shared__/dto/response';
+import { AppCtx } from 'src/__shared__/interfaces/context.interface';
 import useAuth from "src/__shared__/middleware/auth.middleware";
 import useValidation from "src/__shared__/middleware/validation.middleware";
 import { CreateAuthDto } from "./dto";
@@ -18,16 +18,16 @@ export class AuthController {
     router.del(this.path, useAuth, this.delete);
   }
 
-  async create(ctx: Context): Promise<UserResponseDto> {
-    const dto = ctx.body as CreateAuthDto;
+  async create(ctx: AppCtx): Promise<UserResponseDto> {
+    const dto = ctx.request.body as CreateAuthDto;
     return this.authService.create(ctx, dto);
   }
 
-  async getOne(ctx: Context): Promise<User | undefined> {
+  async getOne(ctx: AppCtx): Promise<UserResponseDto> {
     return this.authService.findOne(ctx);
   }
 
-  delete(ctx: Context): boolean {
+  delete(ctx: AppCtx): EmptyResponseDto {
     return this.authService.remove(ctx);
   }
 }
