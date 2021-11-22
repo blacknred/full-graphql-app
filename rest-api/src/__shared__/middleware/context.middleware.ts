@@ -1,12 +1,20 @@
 import { Context, Next } from "koa";
 import graphqlHTTP from "koa-graphql";
-import { buildSchema } from "type-graphql";
-import { AppCtx } from "../../typings";
+import { buildSchema, NonEmptyArray } from "type-graphql";
+import { IModule } from "../interfaces/module.interface";
+import { AppCtx } from "../interfaces/context.interface";
 
 /** build http graphql middleware */
 
-export default (conf: __Config__, kv: AppCtx["kv"], smtp: AppCtx["smtp"]) =>
+export default (
+    conf: __Config__,
+    resolvers: NonEmptyArray<IModule>,
+    kv: AppCtx["kv"],
+    smtp: AppCtx["smtp"]
+  ) =>
   async (ctx: Context, next: Next) => {
+    conf.graphql.resolvers = resolvers;
+
     const schema: graphqlHTTP.Options = {
       graphiql: conf.graphiql,
       schema: await buildSchema(conf.graphql),

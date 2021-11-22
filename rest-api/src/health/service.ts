@@ -1,7 +1,7 @@
 import server from "../index";
 
 export class HealthService {
-  async check() {
+  async get() {
     return {
       status: server.status,
       tz: server.timezome,

@@ -1,4 +1,3 @@
-import { Field, Int, ObjectType } from "type-graphql";
 import {
   BaseEntity,
   Column,
@@ -11,48 +10,37 @@ import { User } from "../users/entity";
 import { Vote } from "../votes/entity";
 
 @Entity()
-@ObjectType()
 export class Post extends BaseEntity {
-  @Field()
   @PrimaryGeneratedColumn()
   id!: number;
 
-  @Field()
   @Column()
   title!: string;
 
-  @Field()
   @Column()
   text!: string;
 
-  @Field()
   @Column()
   creatorId!: number;
 
-  @Field(() => String)
   @UpdateDateColumn()
   createdAt = new Date();
 
-  @Field(() => String)
   @UpdateDateColumn()
   updatedAt = new Date();
 
   //
 
-  @Field()
   @ManyToOne(() => User, (user) => user.posts, {
     onDelete: "CASCADE",
   })
   creator!: User;
 
-  @Field(() => [Vote])
   @OneToMany(() => Vote, (vote) => vote.postId)
   votes!: Vote[];
 
-  @Field(() => Int, { nullable: true })
   rating = 0;
 
-  @Field({ nullable: true })
   userVote!: Vote;
 
   // @AfterLoad()

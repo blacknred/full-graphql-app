@@ -1,6 +1,6 @@
 import crypt from "bcryptjs";
+import { AppCtx } from "src/__shared__/interfaces/context.interface";
 import { v4 } from "uuid";
-import { AppCtx } from "../typings";
 import emails from "../__shared__/utils/mailTemplates";
 import { CreateUserDto, UpdatePasswordDto } from "./dto";
 import { User } from "./entity";

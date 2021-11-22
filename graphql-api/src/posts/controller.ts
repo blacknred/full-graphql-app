@@ -1,3 +1,4 @@
+import { PaginationDto } from "src/__shared__/dto/request";
 import {
   Arg,
   Ctx,
@@ -8,9 +9,8 @@ import {
   Root,
   UseMiddleware,
 } from "type-graphql";
-import checkAuth from "../__shared__/middleware/auth.middleware";
 import { AppCtx } from "../__shared__/interfaces/context.interface";
-import { PaginatedInputDto } from "../__shared__/dto/response";
+import checkAuth from "../__shared__/middleware/auth.middleware";
 import {
   CreatePostDto,
   PostResponseDto,
@@ -31,7 +31,7 @@ export class PostsController {
 
   @Query(() => PostsResponseDto)
   async getMany(
-    @Arg("params") params: PaginatedInputDto,
+    @Arg("params") params: PaginationDto,
     @Ctx() { ctx }: AppCtx
   ): Promise<PostsResponseDto> {
     return this.postsService.findAll(ctx, params);

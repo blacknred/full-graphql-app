@@ -1,0 +1,1 @@
+export type IModule = new (...args: any[]) => {};

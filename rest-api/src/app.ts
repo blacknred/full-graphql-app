@@ -11,10 +11,10 @@ import { Transporter } from "nodemailer";
 import { ServerInfo } from "redis";
 import "reflect-metadata";
 import { Connection, createConnection } from "typeorm";
-import { IController } from "./__shared__/interfaces/controller.interface";
 import useCors from "./__shared__/middleware/cors.middleware";
 import useErrors from "./__shared__/middleware/error.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
+import { IModule } from "./__shared__/interfaces/module.interface";
 
 /** set all up */
 
@@ -26,7 +26,7 @@ export default class App {
   private redis?: RedisClient;
   private smtp?: Transporter;
 
-  constructor(conf: __Config__, controllers: IController[]) {
+  constructor(conf: __Config__, modules: ReadonlyArray<IModule>) {
     /** logger */
     log4js.configure(conf.logger);
     this.logger = log4js.getLogger("server");
@@ -43,7 +43,7 @@ export default class App {
     process.on("SIGINT", this.stop.bind(this));
 
     /** run */
-    this.start(conf, controllers);
+    this.start(conf, modules);
   }
 
   /** server health status */
@@ -83,7 +83,7 @@ export default class App {
 
   /** run */
 
-  private async start(conf: __Config__, controllers: IController[]) {
+  private async start(conf: __Config__, modules: ReadonlyArray<IModule>) {
     try {
       /** redis instance */
       this.redis = new Redis(conf.redis);
@@ -121,12 +121,11 @@ export default class App {
       app.use(bodyParser());
       app.use(helmet());
       app.use(useErrors);
+      //
 
       /** routes */
       const router = new Router();
-      controllers.forEach((Controller) => {
-        new Controller(router);
-      });
+      modules.forEach((Module) => new Module(router));
       app.use(router.routes());
 
       /** listen */

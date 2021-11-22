@@ -2,20 +2,20 @@ import Router from "@koa/router";
 import { Context } from "koa";
 import useAuth from "src/__shared__/middleware/auth.middleware";
 import useValidation from "src/__shared__/middleware/validation.middleware";
-import { IController } from "../__shared__/interfaces/controller.interface";
 import { CreateUserDto, UpdatePasswordDto, UserResponseDto } from "./dto";
 import { UsersService } from "./service";
 
-export class UsersController implements IController {
+export class UsersController {
   path = "/users";
+  private usersService = new UsersService();
 
-  constructor(router: Router, private usersService: UsersService) {
-    router.post(`${this.path}`, useValidation(CreateUserDto), this.createUser);
+  constructor(router: Router) {
+    router.post(this.path, useValidation(CreateUserDto), this.create);
     router.post(`${this.path}/password`, useAuth, this.changePassword);
     router.patch(`${this.path}/password`, useAuth, this.updatePassword);
   }
 
-  async createUser(ctx: Context): Promise<UserResponseDto> {
+  async create(ctx: Context): Promise<UserResponseDto> {
     const dto = ctx.body as CreateUserDto;
     return this.usersService.create(ctx, dto);
   }

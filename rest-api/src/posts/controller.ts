@@ -1,74 +1,50 @@
-import {
-  Arg,
-  Ctx,
-  FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
-  Root,
-  UseMiddleware,
-} from "type-graphql";
-import checkAuth from "../../__shared__/middleware/auth.middleware";
-import { AppCtx } from "../../typings";
-import { PaginatedInputDto } from "../../__shared__/dto/response";
+import Router from "@koa/router";
+import { Context } from "koa";
+import { PaginationDto } from "src/__shared__/dto/request";
+import useAuth from "src/__shared__/middleware/auth.middleware";
+import useValidation from "src/__shared__/middleware/validation.middleware";
 import {
   CreatePostDto,
   PostResponseDto,
   PostsResponseDto,
-  UpdatePostDto,
+  UpdatePostDto
 } from "./dto";
-import { Post } from "./entity";
 import { PostsService } from "./service";
 
-@Resolver(Post)
-export class PostController {
+export class PostsController {
+  path = "/posts";
   private postsService = new PostsService();
 
-  @FieldResolver(() => String)
-  textSnippet(@Root() post: Post) {
-    return post.text.slice(0, 500);
+  constructor(router: Router) {
+    router.post(this.path, useAuth, useValidation(CreatePostDto), this.create);
+    router.get(this.path, useAuth, useValidation(PaginationDto), this.getAll);
+    router.get(`${this.path}/:id`, useAuth, this.getOne);
+    router.patch(`${this.path}/:id`, useAuth, useValidation(UpdatePostDto), this.update);
+    router.delete(`${this.path}/:id`, useAuth, this.delete);
   }
 
-  @Query(() => PostsResponseDto)
-  async getMany(
-    @Arg("params") params: PaginatedInputDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostsResponseDto> {
+  async getAll(ctx: Context): Promise<PostsResponseDto> {
+    const params = ctx.params as PaginationDto;
     return this.postsService.findAll(ctx, params);
   }
 
-  @Query(() => Post, { nullable: true })
-  async getOne(
-    @Arg("id") id: number,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<Post | undefined> {
+  async getOne(ctx: Context): Promise<PostResponseDto> {
+    const id = ctx.params.id as number;
     return this.postsService.findOne(ctx, id);
   }
 
-  @Mutation(() => PostResponseDto)
-  @UseMiddleware(checkAuth)
-  async create(
-    @Arg("dto") dto: CreatePostDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponseDto> {
+  async create(ctx: Context): Promise<PostResponseDto> {
+    const dto = ctx.body as CreatePostDto;
     return this.postsService.create(ctx, dto);
   }
 
-  @Mutation(() => PostResponseDto, { nullable: true })
-  @UseMiddleware(checkAuth)
-  async update(
-    @Arg("dto") dto: UpdatePostDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponseDto> {
+  async update(ctx: Context): Promise<PostResponseDto> {
+    const dto = ctx.body as UpdatePostDto;
     return this.postsService.update(ctx, dto);
   }
 
-  @Mutation(() => PostResponseDto)
-  @UseMiddleware(checkAuth)
-  async delete(
-    @Arg("id") id: number,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<PostResponseDto> {
+  async delete(ctx: Context): Promise<null> {
+    const id = ctx.params.id as number;
     return this.postsService.remove(ctx, id);
   }
 }

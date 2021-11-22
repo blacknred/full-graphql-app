@@ -1,13 +1,17 @@
-import { Query, Resolver } from "type-graphql";
-import { HealthResponseDto } from "./dto";
+import Router from "@koa/router";
 import { HealthService } from "./service";
+import { HealthResponseDto } from "./dto";
+import useAuth from "src/__shared__/middleware/auth.middleware";
 
-@Resolver()
-export class HeathController {
+export class HealthController {
+  path = "/health";
   private heathService = new HealthService();
 
-  @Query(() => HealthResponseDto)
-  async getHealth() {
-    return this.heathService.check();
+  constructor(router: Router) {
+    router.get(this.path, useAuth, this.get);
+  }
+
+  async get(): Promise<HealthResponseDto> {
+    return this.heathService.get();
   }
 }

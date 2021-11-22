@@ -1,21 +1,20 @@
-import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
-import checkAuth from "../../__shared__/middleware/auth.middleware";
-import { AppCtx } from "../../typings";
-import { VoteResponseDto } from "./dto";
-import { CreateVoteDto } from "./dto";
+import Router from "@koa/router";
+import { Context } from "koa";
+import useAuth from "src/__shared__/middleware/auth.middleware";
+import useValidation from "src/__shared__/middleware/validation.middleware";
+import { CreateVoteDto, VoteResponseDto } from "./dto";
 import { VotesService } from "./service";
-import { Vote } from "./entity";
 
-@Resolver(Vote)
-export class PostController {
+export class VotesController {
+  path = "/votes";
   private votesService = new VotesService();
 
-  @Mutation(() => VoteResponseDto)
-  @UseMiddleware(checkAuth)
-  async createVote(
-    @Arg("dto") dto: CreateVoteDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<VoteResponseDto> {
+  constructor(router: Router) {
+    router.post(this.path, useAuth, useValidation(CreateVoteDto), this.create);
+  }
+
+  async create(ctx: Context): Promise<VoteResponseDto> {
+    const dto = ctx.body as CreateVoteDto;
     return this.votesService.create(ctx, dto);
   }
 }

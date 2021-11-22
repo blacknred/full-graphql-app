@@ -1,14 +1,14 @@
 import { Context, Next } from "koa";
 import graphqlHTTP from "koa-graphql";
 import { buildSchema, NonEmptyArray } from "type-graphql";
-import { Constructor } from "../interfaces/constructor.interface";
+import { IModule } from "../interfaces/module.interface";
 import { AppCtx } from "../interfaces/context.interface";
 
 /** build http graphql middleware */
 
 export default (
     conf: __Config__,
-    resolvers: NonEmptyArray<Constructor>,
+    resolvers: NonEmptyArray<IModule>,
     kv: AppCtx["kv"],
     smtp: AppCtx["smtp"]
   ) =>

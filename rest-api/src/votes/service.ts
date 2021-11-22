@@ -1,7 +1,7 @@
-import { AppCtx } from "../../typings";
 import { Post } from "../posts/entity";
 import { Vote } from "./entity";
 import { CreateVoteDto } from "./dto";
+import { AppCtx } from "src/__shared__/interfaces/context.interface";
 
 export class VotesService {
   async create(ctx: AppCtx["ctx"], { value, postId }: CreateVoteDto) {

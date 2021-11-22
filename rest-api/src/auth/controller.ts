@@ -1,42 +1,33 @@
-import {
-  Arg,
-  Ctx,
-  FieldResolver,
-  Mutation,
-  Query,
-  Resolver,
-  Root
-} from "type-graphql";
-import { AppCtx } from "../typings";
-import { UserResponseDto } from "../app/users/dto";
-import { User } from "../app/users/user.entity";
+
+import Router from '@koa/router';
+import { Context } from "koa";
+import { UserResponseDto } from 'src/users/dto';
+import { User } from 'src/users/entity';
+import useAuth from "src/__shared__/middleware/auth.middleware";
+import useValidation from "src/__shared__/middleware/validation.middleware";
 import { CreateAuthDto } from "./dto";
 import { AuthService } from "./service";
 
-@Resolver(User)
-export class UserController {
+export class AuthController {
+  path = '/auth';
   private authService = new AuthService();
 
-  @FieldResolver(() => String)
-  email(@Root() user: User, @Ctx() { ctx }: AppCtx) {
-    return ctx.session!.userId === user.id ? user.email : "";
+  constructor(router: Router) {
+    router.post(this.path, useValidation(CreateAuthDto), this.create);
+    router.get(this.path, useAuth, this.getOne);
+    router.del(this.path, useAuth, this.delete);
   }
 
-  @Mutation(() => UserResponseDto)
-  async createAuth(
-    @Arg("dto") dto: CreateAuthDto,
-    @Ctx() { ctx }: AppCtx
-  ): Promise<UserResponseDto> {
+  async create(ctx: Context): Promise<UserResponseDto> {
+    const dto = ctx.body as CreateAuthDto;
     return this.authService.create(ctx, dto);
   }
 
-  @Query(() => User, { nullable: true })
-  async getAuth(@Ctx() { ctx }: AppCtx): Promise<User | undefined> {
+  async getOne(ctx: Context): Promise<User | undefined> {
     return this.authService.findOne(ctx);
   }
 
-  @Mutation(() => Boolean)
-  deleteAuth(@Ctx() { ctx }: AppCtx): boolean {
+  delete(ctx: Context): boolean {
     return this.authService.remove(ctx);
   }
 }

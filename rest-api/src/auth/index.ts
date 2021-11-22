@@ -1,0 +1,1 @@
+export { AuthController as AuthModule } from './controller';

@@ -11,7 +11,7 @@ import { ServerInfo } from "redis";
 import "reflect-metadata";
 import { NonEmptyArray } from "type-graphql";
 import { Connection, createConnection } from "typeorm";
-import { Constructor } from "./__shared__/interfaces/constructor.interface";
+import { IModule } from "./__shared__/interfaces/module.interface";
 import checkCors from "./__shared__/middleware/cors.middleware";
 import schemaBuilder from "./__shared__/middleware/graphql.middleware";
 import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
@@ -26,7 +26,7 @@ export default class App {
   private redis?: RedisClient;
   private smtp?: Transporter;
 
-  constructor(conf: __Config__, modules: NonEmptyArray<Constructor>) {
+  constructor(conf: __Config__, modules: NonEmptyArray<IModule>) {
     /** logger */
     log4js.configure(conf.logger);
     this.logger = log4js.getLogger("server");
@@ -83,7 +83,7 @@ export default class App {
 
   /** run */
 
-  private async start(conf: __Config__, modules: NonEmptyArray<Constructor>) {
+  private async start(conf: __Config__, modules: NonEmptyArray<IModule>) {
     try {
       /** redis instance */
       this.redis = new Redis(conf.redis);

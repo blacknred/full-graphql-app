@@ -25,4 +25,4 @@ export class UpdatePasswordDto {
   password!: string;
 }
 
-export class UserResponseDto extends ValidatedResponseDto(User) {}
+export class UserResponseDto extends ValidatedResponseDto<User> {}

@@ -1,10 +1,11 @@
-import { AppCtx } from "../../typings";
-import { PaginatedInputDto } from "../../__shared__/dto/response";
+
+import { PaginationDto } from "src/__shared__/dto/request";
+import { AppCtx } from "src/__shared__/interfaces/context.interface";
 import { CreatePostDto, UpdatePostDto } from "./dto";
 import { Post } from "./entity";
 
 export class PostsService {
-  async findAll(ctx: AppCtx["ctx"], params: PaginatedInputDto) {
+  async findAll(ctx: AppCtx["ctx"], params: PaginationDto) {
     const lim = Math.min(50, params.limit);
     const extraLim = lim + 1;
     const cur = params.cursor ? new Date(+params.cursor) : new Date();

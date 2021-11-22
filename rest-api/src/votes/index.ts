@@ -1,0 +1,1 @@
+export { VotesController as VotesModule } from './controller';

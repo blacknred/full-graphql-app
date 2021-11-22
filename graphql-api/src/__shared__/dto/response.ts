@@ -1,4 +1,4 @@
-import { Field, ObjectType, ClassType, InputType } from "type-graphql";
+import { ClassType, Field, ObjectType } from "type-graphql";
 
 @ObjectType()
 export class FieldErrorDto {
@@ -6,16 +6,6 @@ export class FieldErrorDto {
   field!: string;
   @Field()
   message!: string;
-}
-
-@InputType()
-export class PaginatedInputDto {
-  @Field()
-  limit!: number;
-  @Field()
-  cursor?: string;
-  @Field()
-  sorting?: string;
 }
 
 export function PaginatedResponseDto<T>(
