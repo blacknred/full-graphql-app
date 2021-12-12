@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import React from 'react';
-import { useGetAuthQuery } from '../../typings';
+import { useGetAuthQuery } from '../../types';
 
 interface IProps {
   href: string

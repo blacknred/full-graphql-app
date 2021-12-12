@@ -3,7 +3,7 @@ import { Box, Button, Select, Stack, useColorModeValue } from '@chakra-ui/react'
 import router from 'next/router';
 import React, { LegacyRef, useRef } from 'react';
 import useOnViewport from '../../hooks/useOnViewport';
-import { Post, useDeletePostMutation, useGetAuthQuery } from '../../typings';
+import { Post, useDeletePostMutation, useGetAuthQuery } from '../../types';
 import { getRandBgColor } from '../../utils';
 import AuthLink from '../AuthLink';
 

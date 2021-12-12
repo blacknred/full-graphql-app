@@ -6,8 +6,8 @@ import React from 'react';
 import InputField from '../../components/InputField';
 import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
-import { useChangePasswordMutation } from '../../typings';
-import urqlClient from '../../urql';
+import { useChangePasswordMutation } from '../../types';
+import urqlClient from '../../lib/graphql/urql';
 import { errorMap } from '../../utils';
 
 interface IProps { }

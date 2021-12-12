@@ -2,8 +2,9 @@ import { Cache, cacheExchange, CacheExchangeOpts, Resolver } from '@urql/exchang
 import router from 'next/router';
 import { dedupExchange, Exchange, fetchExchange, gql, stringifyVariables } from 'urql';
 import { pipe, tap } from 'wonka';
-import { CreateAuthMutation, CreateUserMutation, CreateVoteMutation, DeleteAuthMutation, DeletePostMutationVariables, GetAuthDocument, GetAuthQuery } from './typings';
-import { customUpdateQuery, isServer } from './utils';
+import { API_HOST } from '../../config';
+import { CreateAuthMutation, CreateUserMutation, CreateVoteMutation, DeleteAuthMutation, DeletePostMutationVariables, GetAuthDocument, GetAuthQuery } from '../../types';
+import { customUpdateQuery, isServer } from '../../utils';
 
 const ErrorExchange: Exchange = ({ forward }) => (ops$) => {
   return pipe(
@@ -84,7 +85,7 @@ const cachePolicy: CacheExchangeOpts = {
 
 export default function createUrqlClient(ssrExchange: any, ctx: any) {
   return {
-    url: `http://${process.env.API_HOST}/graphql`,
+    url: API_HOST,
     exchanges: [dedupExchange, cacheExchange(cachePolicy), ErrorExchange, ssrExchange, fetchExchange],
     // requestPolicy: "cache-and-network",
     fetchOptions: {

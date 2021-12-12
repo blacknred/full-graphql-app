@@ -7,8 +7,8 @@ import Layout from '../../components/Layout';
 import Meta from '../../components/Meta';
 import { PostItem } from '../../components/PostList/PostItem';
 import { Sidebar } from '../../components/Sidebar';
-import { Post, useGetPostQuery } from '../../typings';
-import urqlClient from '../../urql';
+import { Post, useGetPostQuery } from '../../types';
+import urqlClient from '../../lib/graphql/urql';
 
 interface IProps { }
 

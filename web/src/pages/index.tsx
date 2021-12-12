@@ -9,8 +9,8 @@ import Meta from '../components/Meta'
 import { PostList } from '../components/PostList'
 import { Sidebar } from '../components/Sidebar'
 import useOnViewport from '../hooks/useOnViewport'
-import { GetPostsQueryVariables, Post, useGetPostsQuery } from '../typings'
-import urqlClient from '../urql'
+import { GetPostsQueryVariables, Post, useGetPostsQuery } from '../types'
+import urqlClient from '../lib/graphql/urql'
 
 const Index = () => {
   const [variables, setVariables] = useState<GetPostsQueryVariables>({

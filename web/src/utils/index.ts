@@ -1,4 +1,4 @@
-import { FieldErrorDto } from "./typings";
+import { FieldErrorDto } from "../types";
 import { Cache, QueryInput } from "@urql/exchange-graphcache";
 
 export const isServer = () => typeof window === "undefined";

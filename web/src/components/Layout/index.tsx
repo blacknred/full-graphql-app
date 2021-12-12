@@ -5,7 +5,7 @@ import { FC } from 'react';
 import {
   useDeleteAuthMutation,
   useGetAuthQuery
-} from '../../typings';
+} from '../../types';
 
 interface IProps {
   variant?: 'lg' | 'sm',
