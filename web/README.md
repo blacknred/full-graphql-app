@@ -1,4 +1,4 @@
-# Graphql client
+# Posting app client
 
 ## Stack
 

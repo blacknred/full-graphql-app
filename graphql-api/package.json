@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "description": "",
   "keywords": [],
+  "author": "Dmitry Tretyakov <tretyakov.dmi@gmail.com> (https://blacknred.github.io/)",
   "main": "src/index.ts",
   "scripts": {
     "dev": "nodemon --config nodemon.json src/index.ts",
@@ -19,7 +20,6 @@
     "migration:run": "npx typeorm migration:run"
   },
   "repository": "",
-  "author": "",
   "license": "MIT",
   "engines": {
     "node": ">=10.0.0"

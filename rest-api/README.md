@@ -1,8 +1,8 @@
-# Nodejs graphql server
+# Posting app rest api server
 
 ## Stack
 
-TS, Nodejs, Koa, Postgres, Redis, GraphQL
+TS, Nodejs, Koa, Postgres, Redis, Rest Api
 
 ## Running the app
 

@@ -1,4 +1,4 @@
-# Nodejs graphql server
+# Posting app graphql api server
 
 ## Stack
 
