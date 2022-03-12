@@ -1,4 +1,4 @@
-# Fullstack GraphQL app
+# Posting app
 
 Auth, Article Posting
 
