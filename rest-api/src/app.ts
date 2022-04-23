@@ -18,7 +18,6 @@ import { Redis, RedisClient, RedisSession } from "./__shared__/utils/redis";
 import { IModule } from "./__shared__/interfaces/module.interface";
 
 /** set all up */
-
 export default class App {
   ref?: http.Server;
   startsAt = Date.now();
