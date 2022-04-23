@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@postingapp/web",
   "version": "0.1.0",
   "private": true,
   "author": "Dmitry Tretyakov <tretyakov.dmi@gmail.com> (https://blacknred.github.io/)",

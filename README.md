@@ -8,9 +8,9 @@ Simple social posting app with both rest and graphql api servers
 | ------------------- | --------------| -------------------------- | ----- |
 | DB                  | db            | Postgres                   | 5432  |
 | Cache               | cache         | Redis                      | 6379  |
-| Web client          | client        | TS, NextJS, Urql, ChakraUI | 3000  |
+| Web client          | web           | TS, NextJS, Urql, ChakraUI | 3000  |
 | API service         | graphql-api   | TS, Koa, Http, GraphQL     | 8080  |
-<!-- | API service         | rest-api      | TS, Koa, Http              | 8080  | -->
+| API service         | rest-api      | TS, Koa, Http              | 8080  |
 
 ## Run the project
 
