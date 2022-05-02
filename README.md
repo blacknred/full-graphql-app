@@ -1,6 +1,6 @@
 # Posting app
 
-Simple social posting app with both rest and graphql api servers
+Simple social posting app with both rest and graphql api servers written in Koa but with a NestJS like structure
 
 ## Architecture
 
