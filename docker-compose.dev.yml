@@ -37,7 +37,7 @@ services:
     command: yarn dev
     build:
       context: ./graphql-api
-      target: development
+      target: build
     env_file:
       - ".env.dev"
     volumes:
@@ -60,9 +60,10 @@ services:
   web:
     container_name: web
     hostname: web
+    command: yarn dev
     build:
       context: ./web
-      target: development
+      target: build
     volumes:
       - ./web:/usr/src/app
       - /usr/src/app/node_modules
